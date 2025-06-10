@@ -1,0 +1,12 @@
+<h2>Artists</h2>
+<div *ngIf="artists.length === 0;  else showItems">
+     There are no artists to display.
+</div>
+
+<ng-template #showItems>
+    <ul>
+        <li *ngFor="let artist of artists">
+            <strong>{{ artist.firstName }} {{ artist.lastName }}</strong> ({{ artist.dateOfBirth }}) - {{ artist.nationality }}
+        </li>
+    </ul>
+</ng-template>

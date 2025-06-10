@@ -1,1 +1,12 @@
 <h2>Book List</h2>
+<div *ngIf="books.length === 0;  else showItems">
+     There are no books to display.
+</div>
+
+<ng-template #showItems>
+    <ul>
+        <li *ngFor="let book of books">
+            <strong>{{ book.title }}</strong> ({{ book.genre }}) - {{ book.basePrice }} Dollars
+        </li>
+    </ul>
+</ng-template>

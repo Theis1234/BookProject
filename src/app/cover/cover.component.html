@@ -1,0 +1,12 @@
+<h2>Covers</h2>
+<div *ngIf="covers.length === 0;  else showItems">
+     There are no authors to display.
+</div>
+
+<ng-template #showItems>
+    <ul>
+        <li *ngFor="let cover of covers">
+            <strong>{{ cover.title }} Only Digital: {{ cover.digitalOnly }}</strong> 
+        </li>
+    </ul>
+</ng-template>
