@@ -1,12 +1,16 @@
-<h2>Book List</h2>
-<div *ngIf="books.length === 0;  else showItems">
-     There are no books to display.
+<div class="book-page">
+  <h2>Book List</h2>
+  <div *ngIf="books.length === 0;  else showItems">
+    There are no books to display.
+  </div>
 </div>
-
 <ng-template #showItems>
-    <ul>
-        <li *ngFor="let book of books">
-            <strong>{{ book.title }}</strong> ({{ book.genre }}) - {{ book.basePrice }} Dollars
-        </li>
-    </ul>
+  <div class="book-list">
+    <div class="book-card" *ngFor="let book of books">
+      <h3 class="book-title">{{ book.title }}</h3>
+      <p class="book-genre"><strong>Genre:</strong> {{ book.genre }}</p>
+      <p class="book-price"><strong>Price:</strong> {{ book.basePrice }} Dollars</p>
+      <img src="/assets/booook.png" alt="Picture of {{ book.title }}" class="book-image">
+    </div>
+  </div>
 </ng-template>

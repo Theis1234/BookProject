@@ -1,12 +1,16 @@
-<h2>Artists</h2>
-<div *ngIf="artists.length === 0;  else showItems">
-     There are no artists to display.
+<div class="artist-page">
+  <h2>Artists</h2>
+  <div *ngIf="artists.length === 0;  else showItems">
+    There are no artists to display.
+  </div>
 </div>
-
 <ng-template #showItems>
-    <ul>
-        <li *ngFor="let artist of artists">
-            <strong>{{ artist.firstName }} {{ artist.lastName }}</strong> ({{ artist.dateOfBirth }}) - {{ artist.nationality }}
-        </li>
-    </ul>
+  <div class="artist-list">
+    <div class="artist-card" *ngFor="let artist of artists">
+      <h3 class="artist-name-title">{{ artist.firstName }} {{ artist.lastName }}</h3>
+      <h3 class="artist-nationality">Nationality: {{ artist.nationality }} </h3>
+      <p class="artist-birthday"><strong>Birthday: </strong> {{ artist.dateOfBirth }} </p>
+      <img src="/assets/v3_0744730.jpg" alt="Picture of {{ artist.lastName }}" class="artist-image">
+    </div>
+  </div>
 </ng-template>
