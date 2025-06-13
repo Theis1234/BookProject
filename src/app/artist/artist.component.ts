@@ -7,7 +7,6 @@ import { AuthService } from '../services/auth.service';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  standalone: true,
   selector: 'app-artist',
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './artist.component.html',
@@ -15,6 +14,7 @@ import { RouterLink } from '@angular/router';
 })
 export class ArtistComponent implements OnInit {
   isAdminUser: boolean = false;
+  
   artists: Artist[] = [];
 
   constructor(private artistService: ArtistService, private authService : AuthService) {}
@@ -24,6 +24,7 @@ export class ArtistComponent implements OnInit {
       next: (data) => (this.artists = data),
       error: (err) => console.error('Error loading artists', err)
     });
+
     this.authService.role$.subscribe(role => { this.isAdminUser = role === 'Admin' });
   }
 }

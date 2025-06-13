@@ -19,13 +19,26 @@ export class ArtistService {
     return this.http.get<Artist>(`${this.apiUrl}/${id}`);
   }
   updateArtist(id: number, artist: Artist): Observable<void> {
+
+    const headers = this.ensureTokenAuthorization();
+
+    return this.http.put<void>(`${this.apiUrl}/${id}`, artist, { headers });
+  }
+
+  deleteArtist(id: number): Observable<void> {
+    const headers = this.ensureTokenAuthorization();
+
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers });
+  }
+  
+
+  private ensureTokenAuthorization() {
     const token = localStorage.getItem('jwt');
 
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
     });
-
-    return this.http.put<void>(`${this.apiUrl}/${id}`, artist, { headers });
+    return headers;
   }
 }

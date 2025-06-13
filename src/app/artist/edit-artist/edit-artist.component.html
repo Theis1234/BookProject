@@ -21,7 +21,6 @@
       <input type="date" [(ngModel)]="artist.dateOfBirth" name="dateOfBirth" id="dateOfBirth" required />
     </div>
 
-    <!-- Optional: Display cover image URLs -->
     <div class="form-group">
       <label for="covers">Artist Covers:</label>
       <div *ngFor="let cover of artist.artistCovers; let i = index">
@@ -30,7 +29,7 @@
     </div>
 
     <div class="button-group">
-      <button type="submit" class="btn btn-danger" (click)="onDelete()">Delete Artist</button>
+      <button type="button" class="btn btn-danger" (click)="onDelete()">Delete Artist</button>
       <button type="submit" class="btn btn-primary">Save</button>
     </div>
   </form>

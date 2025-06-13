@@ -12,9 +12,7 @@ import { Artist } from '../../models/artist.model';
   styleUrl: './edit-artist.component.css'
 })
 export class EditArtistComponent implements OnInit{
-onDelete() {
-throw new Error('Method not implemented.');
-}
+
   artist: Artist | null = null;
 
   constructor(
@@ -41,5 +39,15 @@ throw new Error('Method not implemented.');
       error: () => alert('Failed to update artist.')
     });
   }
+  onDelete() {
+  if (!this.artist) return;
 
+  this.artistService.deleteArtist(this.artist.id).subscribe({
+      next: () => {
+        alert('Artist deleted successfully!');
+        this.router.navigate(['/artists']);
+      },
+      error: () => alert('Failed to delete artist.')
+    });
+}
 }

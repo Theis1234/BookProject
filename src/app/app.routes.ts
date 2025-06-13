@@ -41,7 +41,25 @@ export const routes: Routes = [
     {
         path: 'artists/edit/:id',
         loadComponent: () => {
-            return import('./artist/edit-artist-component/edit-artist.component').then((m) => m.EditArtistComponent)
+            return import('./artist/edit-artist/edit-artist.component').then((m) => m.EditArtistComponent)
+        },
+    },
+    {
+        path: 'books/edit/:id',
+        loadComponent: () => {
+            return import('./book-list/edit-book/edit-book.component').then((m) => m.EditBookComponent)
+        },
+    },
+    {
+        path: 'authors/edit/:id',
+        loadComponent: () => {
+            return import('./author/edit-author/edit-author.component').then((m) => m.EditAuthorComponent)
+        },
+    },
+    {
+        path: 'covers/edit/:id',
+        loadComponent: () => {
+            return import('./cover/edit-cover/edit-cover.component').then((m) => m.EditCoverComponent)
         },
     },
 ];

@@ -3,10 +3,12 @@ import { Author } from '../models/author.model';
 import { AuthorService } from '../services/author.service';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
+import { RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-author',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './author.component.html',
   styleUrl: './author.component.css'
 })

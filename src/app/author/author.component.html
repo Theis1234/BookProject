@@ -14,7 +14,7 @@
       <p class="author-last-published"><strong>Last Published Book:</strong> {{ author.lastPublishedBook }} </p>
       <p class="author-books-published"><strong>Books Published:</strong> {{ author.numberOfBooksPublished }} </p>
       <img src="/assets/v3_0744730.jpg" alt="Picture of {{ author.lastName }}" class="author-image">
-      <button onsubmit="editAuthor(id)" class="edit-author-button" *ngIf="isAdminUser">Edit Author</button>
+      <button class="edit-author-button" *ngIf="isAdminUser" [routerLink]="['/authors/edit', author.id]">Edit Author</button>
     </div>
   }
   </div>

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Author } from '../models/author.model';
@@ -19,6 +19,23 @@ export class AuthorService {
     return this.http.get<Author>(`${this.apiUrl}/${id}`);
   }
   updateAuthor(id: number, author: Author): Observable<void> {
-  return this.http.put<void>(`${this.apiUrl}/${id}`, author);
+  const headers = this.ensureTokenAuthorization();
+
+  return this.http.put<void>(`${this.apiUrl}/${id}`, author, { headers });
 }
+  deleteAuthor(id: number): Observable<void> {
+    const headers = this.ensureTokenAuthorization();
+
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers });
+  } 
+
+  private ensureTokenAuthorization() {
+    const token = localStorage.getItem('jwt');
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    return headers;
+  }
 }

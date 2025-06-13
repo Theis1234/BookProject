@@ -12,6 +12,7 @@
       <p class="book-genre"><strong>Genre:</strong> {{ book.genre }}</p>
       <p class="book-price"><strong>Price:</strong> {{ book.basePrice }} Dollars</p>
       <img src="/assets/booook.png" alt="Picture of {{ book.title }}" class="book-image">
+      <button class="edit-book-button" *ngIf="isAdminUser" [routerLink]="['/books/edit', book.id]">Edit Book</button>
     </div>
 }
   </div>
