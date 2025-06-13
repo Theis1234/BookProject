@@ -32,4 +32,10 @@ export const routes: Routes = [
             return import('./cover/cover.component').then((m) => m.CoverComponent)
         },
     },
+    {
+        path: 'login',
+        loadComponent: () => {
+            return import('./login/login.component').then((m) => m.LoginComponent)
+        },
+    },
 ];

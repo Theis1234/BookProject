@@ -1,21 +1,16 @@
-<h2 class="book-site-title">Book List</h2>
-<div *ngIf="books.length === 0;  else showItems">
-     There are no books to display.
+<div class="book-page">
+  <h2>Book List</h2>
+  <div *ngIf="books.length === 0;  else showItems">
+    There are no books to display.
+  </div>
 </div>
-
 <ng-template #showItems>
-    <ul class="book-list">
-        <li *ngFor="let book of books" class="book-card">
-            <div class="card">
-                <img [src]="'assets/50HGkxS.jpeg'" alt="{{ book.title }} cover" class="card-img">
-                    <div class="card-content">
-                        <h2 class="book-title">{{ book.title }}</h2>
-                        <p class="book-author"><strong>Author:</strong> {{ book.author.firstName }} {{ book.author.lastName}}</p>
-                        <p class="book-genre"><strong>Genre:</strong> {{ book.genre }}</p>
-                        <p class="book-pages"><strong>Pages:</strong> {{ book.numberOfPages }}</p>
-                    </div>
-            </div>
-            
-        </li>
-    </ul>
+  <div class="book-list">
+    <div class="book-card" *ngFor="let book of books">
+      <h3 class="book-title">{{ book.title }}</h3>
+      <p class="book-genre"><strong>Genre:</strong> {{ book.genre }}</p>
+      <p class="book-price"><strong>Price:</strong> {{ book.basePrice }} Dollars</p>
+      <img src="/assets/booook.png" alt="Picture of {{ book.title }}" class="book-image">
+    </div>
+  </div>
 </ng-template>
