@@ -6,11 +6,13 @@
 </div>
 <ng-template #showItems>
   <div class="book-list">
-    <div class="book-card" *ngFor="let book of books">
+    @for (book of books; track book){
+    <div class="book-card">
       <h3 class="book-title">{{ book.title }}</h3>
       <p class="book-genre"><strong>Genre:</strong> {{ book.genre }}</p>
       <p class="book-price"><strong>Price:</strong> {{ book.basePrice }} Dollars</p>
       <img src="/assets/booook.png" alt="Picture of {{ book.title }}" class="book-image">
     </div>
+}
   </div>
 </ng-template>

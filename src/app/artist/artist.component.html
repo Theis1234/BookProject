@@ -6,11 +6,14 @@
 </div>
 <ng-template #showItems>
   <div class="artist-list">
-    <div class="artist-card" *ngFor="let artist of artists">
+    @for(artist of artists; track artist){
+    <div class="artist-card">
       <h3 class="artist-name-title">{{ artist.firstName }} {{ artist.lastName }}</h3>
       <h3 class="artist-nationality">Nationality: {{ artist.nationality }} </h3>
       <p class="artist-birthday"><strong>Birthday: </strong> {{ artist.dateOfBirth }} </p>
       <img src="/assets/v3_0744730.jpg" alt="Picture of {{ artist.lastName }}" class="artist-image">
+      <button class="edit-artist-button" *ngIf="isAdminUser" [routerLink]="['/artists/edit', artist.id]">Edit Artist</button>
     </div>
+    }
   </div>
 </ng-template>

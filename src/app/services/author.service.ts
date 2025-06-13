@@ -15,4 +15,10 @@ export class AuthorService {
   getAuthors(): Observable<Author[]> {
     return this.http.get<Author[]>(this.apiUrl);
   }
+  getAuthorById(id : number): Observable<Author> {
+    return this.http.get<Author>(`${this.apiUrl}/${id}`);
+  }
+  updateAuthor(id: number, author: Author): Observable<void> {
+  return this.http.put<void>(`${this.apiUrl}/${id}`, author);
+}
 }

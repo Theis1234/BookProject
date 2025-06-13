@@ -38,4 +38,10 @@ export const routes: Routes = [
             return import('./login/login.component').then((m) => m.LoginComponent)
         },
     },
+    {
+        path: 'artists/edit/:id',
+        loadComponent: () => {
+            return import('./artist/edit-artist-component/edit-artist.component').then((m) => m.EditArtistComponent)
+        },
+    },
 ];
