@@ -1,12 +1,21 @@
-<h2>Book List</h2>
+<h2 class="book-site-title">Book List</h2>
 <div *ngIf="books.length === 0;  else showItems">
      There are no books to display.
 </div>
 
 <ng-template #showItems>
-    <ul>
-        <li *ngFor="let book of books">
-            <strong>{{ book.title }}</strong> ({{ book.genre }}) - {{ book.basePrice }} Dollars
+    <ul class="book-list">
+        <li *ngFor="let book of books" class="book-card">
+            <div class="card">
+                <img [src]="'assets/50HGkxS.jpeg'" alt="{{ book.title }} cover" class="card-img">
+                    <div class="card-content">
+                        <h2 class="book-title">{{ book.title }}</h2>
+                        <p class="book-author"><strong>Author:</strong> {{ book.author.firstName }} {{ book.author.lastName}}</p>
+                        <p class="book-genre"><strong>Genre:</strong> {{ book.genre }}</p>
+                        <p class="book-pages"><strong>Pages:</strong> {{ book.numberOfPages }}</p>
+                    </div>
+            </div>
+            
         </li>
     </ul>
 </ng-template>
