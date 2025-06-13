@@ -1,12 +1,19 @@
-<h2>Covers</h2>
-<div *ngIf="covers.length === 0;  else showItems">
-     There are no covers to display.
+<div class="cover-page">
+  <h2>Cover List</h2>
+  <div *ngIf="covers.length === 0;  else showItems">
+    There are no covers to display.
+  </div>
 </div>
-
 <ng-template #showItems>
-    <ul>
-        <li *ngFor="let cover of covers">
-            <strong>{{ cover.title }} Only Digital: {{ cover.digitalOnly }}</strong> 
-        </li>
-    </ul>
+  <div class="cover-list">
+    @for (cover of covers; track cover){
+    <div class="cover-card">
+      <h3 class="cover-title">{{ cover.title }}</h3>
+      <p class="cover-digital"><strong>Digital Only:</strong> {{ cover.digitalOnly ? 'Yes' : 'No' }}</p>
+      <p class="cover-book"><strong>Made for Book:</strong> {{ cover.book?.title }}</p>
+      <img src="/assets/booook.png" alt="Picture of {{ cover.title }}" class="cover-image">
+      <button class="edit-cover-button" *ngIf="isAdminUser" [routerLink]="['/covers/edit', cover.id]">Edit Cover</button>
+    </div>
+}
+  </div>
 </ng-template>

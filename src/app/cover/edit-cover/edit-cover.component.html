@@ -1,1 +1,24 @@
-<p>edit-cover works!</p>
+<div *ngIf="cover" class="cover-form-container">
+  <h2>Edit Cover</h2>
+  <form (ngSubmit)="onSubmit()" #bookForm="ngForm" class="cover-form">
+    <div class="form-group">
+      <label for="title">Title:</label>
+      <input type="text" [(ngModel)]="cover.title" name="title" id="title" required />
+    </div>
+
+    <div class="form-group">
+      <label for="digitalOnly">Digital Only</label>
+      <input type="checkbox" [(ngModel)]="cover.digitalOnly" name="digitalOnly" id="digitalOnly" required />
+    </div>
+
+    <div class="form-group">
+      <label for="made-for-book">Made for Book (ID):</label>
+      <input type="text" [(ngModel)]="cover.bookId" name="made-for-book" id="made-for-book" required />
+    </div>
+
+    <div class="button-group">
+      <button type="button" class="btn btn-danger" (click)="onDelete()">Delete Book</button>
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </form>
+</div>

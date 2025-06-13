@@ -1,24 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-import { Author } from '../models/author.model';
-import { AuthorService } from '../services/author.service';
 import { CommonModule } from '@angular/common';
-import { Cover } from '../models/cover.model';
+import { AuthService } from '../services/auth.service';
+import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { CoverService } from '../services/cover.service';
+import { Cover } from '../models/cover.model';
 
 @Component({
   selector: 'app-cover',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './cover.component.html',
   styleUrl: './cover.component.css'
 })
-export class CoverComponent implements OnInit {
-    covers: Cover[] = [];
-    constructor(private coverService: CoverService) {}
+export class CoverComponent implements OnInit{
+  isAdminUser: boolean = false;
+  covers: Cover[] = [];
   
-    ngOnInit(): void {
-      this.coverService.getCovers().subscribe({
-        next: (data) => this.covers = data,
-        error: (err) => console.error('Error loading authors', err)
-      });
-    }
+  constructor(private coverService: CoverService, private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.coverService.getCovers().subscribe({
+      next: (data) => this.covers = data,
+      error: (err) => console.error('Error loading covers', err)
+    });
+    this.authService.role$.subscribe(role => { this.isAdminUser = role === 'Admin' });
+  }
+
 }
