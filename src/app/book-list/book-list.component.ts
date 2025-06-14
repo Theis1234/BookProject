@@ -4,11 +4,11 @@ import { BookService } from '../services/book.service';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-book-list',
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, RouterOutlet],
   templateUrl: './book-list.component.html',
   styleUrl: './book-list.component.css'
 })

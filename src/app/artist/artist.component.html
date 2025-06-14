@@ -1,8 +1,13 @@
 <div class="artist-page">
+  <div>
   <h2>Artists</h2>
+  <button class="add-artist-button" *ngIf="isAdminUser" [routerLink]="['/artists/addartist']">Add Artist</button>
+    </div>
+
   <div *ngIf="artists.length === 0;  else showItems">
     There are no artists to display.
   </div>
+  
 </div>
 <ng-template #showItems>
   <div class="artist-list">

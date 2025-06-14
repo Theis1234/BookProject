@@ -1,0 +1,38 @@
+<div *ngIf="author" class="author-form-container">
+  <h2>Add Artist</h2>
+  <form (ngSubmit)="onSubmit()" #artistForm="ngForm" class="author-form">
+    <div class="form-group">
+      <label for="firstName">First Name:</label>
+      <input type="text" [(ngModel)]="author.firstName" name="firstName" id="firstName" required />
+    </div> 
+
+     <div class="form-group">
+      <label for="lastName">Last Name:</label>
+      <input type="text" [(ngModel)]="author.lastName" name="lastName" id="lastName" required />
+    </div> 
+
+    <div class="form-group">
+      <label for="nationality">Nationality:</label>
+      <input type="text" [(ngModel)]="author.nationality" name="nationality" id="nationality" required />
+    </div>
+
+    <div class="form-group">
+      <label for="date-of-birth">Date of Birth:</label>
+      <input type="date" [(ngModel)]="author.dateOfBirth" name="date-of-birth" id="date-of-birth" />
+    </div>
+
+     <div class="form-group">
+      <label for="number-of-books">Number of Books Published</label>
+      <input type="text" [(ngModel)]="author.numberOfBooksPublished" name="number-of-books" id="number-of-books" />
+    </div>
+
+    <div class="form-group">
+      <label for="last-published-book">Last Published Book:</label>
+      <input type="text" [(ngModel)]="author.lastPublishedBook" name="last-published-book" id="last-published-book" required />
+    </div>
+
+    <div class="button-group">
+      <button type="submit" class="btn btn-primary">Add Author</button>
+    </div>
+  </form>
+</div>

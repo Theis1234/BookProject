@@ -1,10 +1,10 @@
 <div class="topnav">
   <div class="nav-left">
-    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
-    <a routerLink="/books" routerLinkActive="active">Books</a>
-    <a routerLink="/artists" routerLinkActive="active">Artists</a>
-    <a routerLink="/authors" routerLinkActive="active">Authors</a>
-    <a routerLink="/covers" routerLinkActive="active">Covers</a>
+    <a [routerLink]="['/']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+    <a [routerLink]="['/books']" routerLinkActive="active">Books</a>
+    <a [routerLink]="['/artists']" routerLinkActive="active">Artists</a>
+    <a [routerLink]="['/authors']" routerLinkActive="active">Authors</a>
+    <a [routerLink]="['/covers']" routerLinkActive="active">Covers</a>
   </div>
   <div class="nav-right">
     <a *ngIf="!isLoggedIn" class="loginanchor" routerLink="/login" routerLinkActive="active">Sign In / Sign Up</a>

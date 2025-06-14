@@ -1,4 +1,4 @@
-import { Artistcover } from './artistcover.model';
+import { ArtistCover } from './artistcover.model';
 
 describe('Artistcover', () => {
   it('should create an instance', () => {

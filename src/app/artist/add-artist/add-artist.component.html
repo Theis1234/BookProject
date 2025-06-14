@@ -1,0 +1,28 @@
+<div *ngIf="artist" class="artist-form-container">
+  <h2>Add Artist</h2>
+  <form (ngSubmit)="onSubmit()" #artistForm="ngForm" class="artist-form">
+    <div class="form-group">
+      <label for="firstName">First Name:</label>
+      <input type="text" [(ngModel)]="artist.firstName" name="firstName" id="firstName" required />
+    </div> 
+
+     <div class="form-group">
+      <label for="lastName">Last Name:</label>
+      <input type="text" [(ngModel)]="artist.lastName" name="lastName" id="lastName" required />
+    </div> 
+
+    <div class="form-group">
+      <label for="nationality">Nationality:</label>
+      <input type="text" [(ngModel)]="artist.nationality" name="nationality" id="nationality" required />
+    </div>
+
+    <div class="form-group">
+      <label for="date-of-birth">Date of Birth:</label>
+      <input type="date" [(ngModel)]="artist.dateOfBirth" name="date-of-birth" id="date-of-birth" />
+    </div>
+
+    <div class="button-group">
+      <button type="submit" class="btn btn-primary">Add Artist</button>
+    </div>
+  </form>
+</div>

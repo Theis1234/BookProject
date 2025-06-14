@@ -1,7 +1,7 @@
 import { Artist } from "./artist.model";
 import { Cover } from "./cover.model";
 
-export interface Artistcover {
+export interface ArtistCover {
     artist: Artist
     artistId: number;
     cover: Cover;

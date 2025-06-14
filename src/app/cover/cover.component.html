@@ -1,5 +1,8 @@
 <div class="cover-page">
+  <div>
   <h2>Cover List</h2>
+  <button class="add-cover-button" *ngIf="isAdminUser" [routerLink]="['/covers/addcover']">Add Cover</button>
+  </div>
   <div *ngIf="covers.length === 0;  else showItems">
     There are no covers to display.
   </div>

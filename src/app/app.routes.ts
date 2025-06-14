@@ -45,9 +45,21 @@ export const routes: Routes = [
         },
     },
     {
+        path: 'artists/addartist',
+        loadComponent: () => {
+            return import('./artist/add-artist/add-artist.component').then((m) => m.AddArtistComponent)
+        },
+    },
+    {
         path: 'books/edit/:id',
         loadComponent: () => {
             return import('./book-list/edit-book/edit-book.component').then((m) => m.EditBookComponent)
+        },
+    },
+    {
+        path: 'books/addbook',
+        loadComponent: () => {
+            return import('./book-list/add-book/add-book.component').then((m) => m.AddBookComponent)
         },
     },
     {
@@ -57,9 +69,21 @@ export const routes: Routes = [
         },
     },
     {
+        path: 'authors/addauthor',
+        loadComponent: () => {
+            return import('./author/add-author/add-author.component').then((m) => m.AddAuthorComponent)
+        },
+    },
+    {
         path: 'covers/edit/:id',
         loadComponent: () => {
             return import('./cover/edit-cover/edit-cover.component').then((m) => m.EditCoverComponent)
+        },
+    },
+    {
+        path: 'covers/addcover',
+        loadComponent: () => {
+            return import('./cover/add-cover/add-cover.component').then((m) => m.AddCoverComponent)
         },
     },
 ];

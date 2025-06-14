@@ -1,0 +1,41 @@
+<div *ngIf="book" class="book-form-container">
+  <h2>Add Book</h2>
+  <form (ngSubmit)="onSubmit()" #bookForm="ngForm" class="book-form">
+    <div class="form-group">
+      <label for="title">Title:</label>
+      <input type="text" [(ngModel)]="book.title" name="title" id="title" required />
+    </div>
+   <div class="form-group">
+  <label for="authorId">Author:</label>
+  <select [(ngModel)]="book.authorId" name="authorId" id="authorId" required>
+    <option *ngFor="let author of authors" [value]="author.id">
+      {{ author.firstName }} {{ author.lastName }}
+    </option>
+  </select>
+</div>
+
+    <div class="form-group">
+      <label for="genre">Genre:</label>
+      <input type="text" [(ngModel)]="book.genre" name="genre" id="genre" required />
+    </div>
+
+    <div class="form-group">
+      <label for="published-date">Published Date:</label>
+      <input type="date" [(ngModel)]="book.publishedDate" name="published-date" id="published-date" />
+    </div>
+
+    <div class="form-group">
+      <label for="number-of-pages">Number of Pages:</label>
+      <input type="text" [(ngModel)]="book.numberOfPages" name="number-of-pages" id="number-of-pages" required />
+    </div>
+
+    <div class="form-group">
+      <label for="base-price">Base Price:</label>
+      <input type="text" [(ngModel)]="book.basePrice" name="base-price" id="base-price" required />
+    </div>
+
+    <div class="button-group">
+      <button type="submit" class="btn btn-primary">Add Book</button>
+    </div>
+  </form>
+</div>

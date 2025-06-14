@@ -1,4 +1,4 @@
-import { Artistcover } from "./artistcover.model";
+import { ArtistCover } from "./artistcover.model";
 
 export interface Artist {
     id: number;
@@ -6,5 +6,5 @@ export interface Artist {
     lastName?: string;
     nationality?: string;
     dateOfBirth: string;
-    artistCovers: Artistcover[]
+    artistCovers: ArtistCover[]
 }

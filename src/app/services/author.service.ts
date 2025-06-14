@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Author } from '../models/author.model';
+import { CreateAuthorDTO } from '../models/create-author-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,12 @@ export class AuthorService {
   getAuthorById(id : number): Observable<Author> {
     return this.http.get<Author>(`${this.apiUrl}/${id}`);
   }
+  createAuthor(author : CreateAuthorDTO): Observable<Author> {
+    const headers = this.ensureTokenAuthorization();
+
+    return this.http.post<Author>(`${this.apiUrl}`, author, { headers });
+  }
+
   updateAuthor(id: number, author: Author): Observable<void> {
   const headers = this.ensureTokenAuthorization();
 

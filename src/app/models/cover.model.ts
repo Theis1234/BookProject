@@ -1,4 +1,4 @@
-import { Artistcover } from "./artistcover.model";
+import { ArtistCover } from "./artistcover.model";
 import { Book } from "./book.model";
 
 export interface Cover {
@@ -7,5 +7,5 @@ export interface Cover {
     digitalOnly: boolean;
     book?: Book;
     bookId: number;
-    artistCovers: Artistcover[];
+    artistCovers: ArtistCover[];
 }
