@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Book } from '../models/book.model';
 import { Cover } from '../models/cover.model';
-import { CreateCoverDTO } from '../models/create-cover-dto';
+import { CoverDTO } from '../models/cover-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -20,12 +20,12 @@ export class CoverService {
   getCoverById(id: number): Observable<Cover> {
     return this.http.get<Cover>(`${this.apiUrl}/${id}`);
   }
-  createCover(cover : CreateCoverDTO): Observable<Cover> {
+  createCover(cover : CoverDTO): Observable<Cover> {
     const headers = this.ensureTokenAuthorization();
   
     return this.http.post<Cover>(`${this.apiUrl}`, cover, { headers});
   }
-  updateCover(id: number, cover: Cover): Observable<void> {
+  updateCover(id: number, cover: CoverDTO): Observable<void> {
     const headers = this.ensureTokenAuthorization();
 
     return this.http.put<void>(`${this.apiUrl}/${id}`, cover, { headers });

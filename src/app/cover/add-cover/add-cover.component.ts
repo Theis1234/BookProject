@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CoverService } from '../../services/cover.service';
-import { CreateCoverDTO } from '../../models/create-cover-dto';
+import { CoverDTO } from '../../models/cover-dto';
 import { Artist } from '../../models/artist.model';
 import { ArtistService } from '../../services/artist.service';
 
@@ -19,7 +19,7 @@ export class AddCoverComponent {
   books: Book[] = [];
   artists: Artist[] = [];
 
-  cover: CreateCoverDTO = {
+  cover: CoverDTO = {
   title: '',
   digitalOnly: false,
   bookId: 0,
@@ -30,8 +30,7 @@ export class AddCoverComponent {
     private coverService: CoverService, 
     private bookService: BookService,
     private artistService: ArtistService,
-    private router: Router, 
-    private route: ActivatedRoute
+    private router: Router,
   ) {}
   ngOnInit() {
   this.bookService.getBooks().subscribe(books => {
@@ -43,6 +42,11 @@ export class AddCoverComponent {
 }
   onSubmit() {
     if (!this.cover) return;
+
+    if (this.cover.artistIds.length === 0) {
+    alert('Please select at least one artist.');
+    return;
+  }
 
     this.coverService.createCover(this.cover).subscribe({
       next: () => {
@@ -58,6 +62,7 @@ export class AddCoverComponent {
 
   if (checkbox.checked) {
     this.cover.artistIds.push(artistId);
+    console.log('checkbox was checked')
   } else {
     this.cover.artistIds = this.cover.artistIds.filter(id => id !== artistId);
   }

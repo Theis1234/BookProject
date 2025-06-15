@@ -24,8 +24,7 @@ export class AddArtistComponent {
 
   constructor(
     private artistService: ArtistService, 
-    private router: Router, 
-    private route: ActivatedRoute
+    private router: Router
   ) {}
 
   onSubmit() {

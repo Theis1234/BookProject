@@ -23,8 +23,7 @@ export class AddAuthorComponent {
 
   constructor(
     private authorService: AuthorService, 
-    private router: Router, 
-    private route: ActivatedRoute
+    private router: Router
   ) {}
 
   onSubmit() {

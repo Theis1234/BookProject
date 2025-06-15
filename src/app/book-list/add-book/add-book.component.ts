@@ -28,8 +28,7 @@ export class AddBookComponent {
   constructor(
     private bookService: BookService, 
     private authorService: AuthorService,
-    private router: Router, 
-    private route: ActivatedRoute
+    private router: Router
   ) {}
   ngOnInit() {
   this.authorService.getAuthors().subscribe(authors => {
