@@ -1,33 +1,48 @@
-<div *ngIf="author" class="author-form-container">
+<div class="author-form-container">
   <h2>Edit Author</h2>
-  <form (ngSubmit)="onSubmit()" #authorForm="ngForm" class="author-form">
+  <form (ngSubmit)="onSubmit()" [formGroup]="editAuthorForm" class="author-form">
     <div class="form-group">
       <label for="firstName">First Name:</label>
-      <input type="text" [(ngModel)]="author.firstName" name="firstName" id="firstName" required />
+      <input type="text" formControlName="firstName" name="firstName" id="firstName" required />
+      <div *ngIf="editAuthorForm.get('firstName')?.touched && editAuthorForm.get('firstName')?.invalid" class="error">
+        <div *ngIf="editAuthorForm.get('firstName')?.errors?.['required']">
+        First Name is required.
+        </div>
+      </div>
     </div>
 
     <div class="form-group">
       <label for="lastName">Last Name:</label>
-      <input type="text" [(ngModel)]="author.lastName" name="lastName" id="lastName" required />
+      <input type="text" formControlName="lastName" name="lastName" id="lastName" required />
+      <div *ngIf="editAuthorForm.get('lastName')?.touched && editAuthorForm.get('lastName')?.invalid" class="error">
+        <div *ngIf="editAuthorForm.get('lastName')?.errors?.['required']">
+        Last Name is required.
+        </div>
+      </div> 
     </div>
 
     <div class="form-group">
       <label for="nationality">Nationality:</label>
-      <input type="text" [(ngModel)]="author.nationality" name="nationality" id="nationality" />
+      <input type="text" formControlName="nationality" name="nationality" id="nationality" />
     </div>
     <div class="form-group">
       <label for="last-publish">Last Published Book:</label>
-      <input type="text" [(ngModel)]="author.lastPublishedBook" name="last-publish" id="last-publish" />
+      <input type="text" formControlName="lastPublishedBook" name="last-publish" id="last-publish" />
     </div>
 
     <div class="form-group">
       <label for="number-of-books">Number of Books Published:</label>
-      <input type="text" [(ngModel)]="author.numberOfBooksPublished" name="number-of-books" id="number-of-books" />
+      <input type="text" formControlName="numberOfBooksPublished" name="number-of-books" id="number-of-books" />
     </div>
 
     <div class="form-group">
       <label for="dateOfBirth">Date of Birth:</label>
-      <input type="date" [(ngModel)]="author.dateOfBirth" name="dateOfBirth" id="dateOfBirth" required />
+      <input type="date" formControlName="dateOfBirth" name="dateOfBirth" id="dateOfBirth" required />
+      <div *ngIf="editAuthorForm.get('dateOfBirth')?.touched && editAuthorForm.get('dateOfBirth')?.invalid" class="error">
+        <div *ngIf="editAuthorForm.get('dateOfBirth')?.errors?.['required']">
+        Date of Birth is required.
+        </div>
+      </div> 
     </div>
 
     <div class="button-group">

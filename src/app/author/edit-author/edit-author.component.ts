@@ -1,37 +1,58 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthorService } from '../../services/author.service';
 import { Author } from '../../models/author.model';
 
 @Component({
   selector: 'app-edit-author',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './edit-author.component.html',
   styleUrl: './edit-author.component.css'
 })
 export class EditAuthorComponent implements OnInit{
-
+  editAuthorForm: FormGroup;
+  submitted = false;
   author: Author | null = null;
 
   constructor(
+    private fb: FormBuilder,
     private authorService: AuthorService, 
     private router: Router, 
     private route: ActivatedRoute
-  ) {}
+  ) {
+    this.editAuthorForm = this.fb.group({
+      firstName: ['',Validators.required],
+      lastName: ['',Validators.required],
+      nationality: [''],
+      dateOfBirth: ['',Validators.required],
+      numberOfBooksPublished: [0],
+      lastPublishedBook: ['']
+    })
+  }
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.authorService.getAuthorById(id).subscribe({
-      next: (data) => this.author = data,
+      next: (data) => {
+        this.editAuthorForm.patchValue(data);
+      },
       error: () => alert('Error loading author')
     });
   }
   onSubmit() {
-    if (!this.author) return;
+    if (this.editAuthorForm.invalid){
+      this.editAuthorForm.markAllAsTouched()
+      return;
+    };
 
-    this.authorService.updateAuthor(this.author.id, this.author).subscribe({
+    const updatedAuthor: Author = {
+      ...this.editAuthorForm.value,
+      id: Number(this.route.snapshot.paramMap.get('id'))
+    };
+
+    this.authorService.updateAuthor(updatedAuthor.id, updatedAuthor).subscribe({
       next: () => {
         alert('Author updated successfully!');
         this.router.navigate(['/authors']);

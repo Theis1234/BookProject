@@ -3,33 +3,46 @@ import { Book } from '../../models/book.model';
 import { BookService } from '../../services/book.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Author } from '../../models/author.model';
 import { AuthorService } from '../../services/author.service';
 import { CreateBookDTO } from '../../models/create-book-dto';
 
 @Component({
   selector: 'app-add-book',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './add-book.component.html',
   styleUrl: './add-book.component.css'
 })
 export class AddBookComponent {
+allowOnlyNumbers(event: KeyboardEvent): void {
+const key = event.key;
+  if (!/^\d$/.test(key)) {
+    event.preventDefault();
+  }
+}
+  addBookForm: FormGroup;
+  submitted = false;
+
   authors: Author[] = [];
-  book: CreateBookDTO = {
-  title: '',
-  genre: '',
-  publishedDate: '',
-  numberOfPages: 0,
-  basePrice: 0,
-  authorId: 0
-};
+
 
   constructor(
+    private fb: FormBuilder,
     private bookService: BookService, 
     private authorService: AuthorService,
     private router: Router
-  ) {}
+  ) {
+    this.addBookForm = this.fb.group({
+      title: [''],
+      genre: [''],
+      publishedDate: ['', Validators.required],
+      numberOfPages: [0, [Validators.required, Validators.min(1)]],
+      basePrice: [0, [Validators.required, Validators.min(0)]],
+      authorId: [null, Validators.required]
+    });
+  }
+  
   ngOnInit() {
   this.authorService.getAuthors().subscribe(authors => {
     this.authors = authors;
@@ -38,9 +51,16 @@ export class AddBookComponent {
 
 
   onSubmit() {
-    if (!this.book) return;
+    if (this.addBookForm.invalid){
+      this.addBookForm.markAllAsTouched()
+      return;
+    };
 
-    this.bookService.createBook(this.book).subscribe({
+    this.submitted = true;
+
+    const createdBook: CreateBookDTO = this.addBookForm.value;
+
+    this.bookService.createBook(createdBook).subscribe({
       next: () => {
         alert('Book added successfully!');
         this.router.navigate(['/books']);

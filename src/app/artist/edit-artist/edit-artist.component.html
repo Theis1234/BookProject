@@ -1,31 +1,39 @@
-<div *ngIf="artist" class="artist-form-container">
+<div class="artist-form-container">
   <h2>Edit Artist</h2>
-  <form (ngSubmit)="onSubmit()" #artistForm="ngForm" class="artist-form">
+  <form (ngSubmit)="onSubmit()" [formGroup]="editArtistForm" class="artist-form">
     <div class="form-group">
       <label for="firstName">First Name:</label>
-      <input type="text" [(ngModel)]="artist.firstName" name="firstName" id="firstName" required />
+      <input type="text" formControlName="firstName" name="firstName" id="firstName" required />
+      <div *ngIf="editArtistForm.get('firstName')?.touched && editArtistForm.get('firstName')?.invalid" class="error">
+        <div *ngIf="editArtistForm.get('firstName')?.errors?.['required']">
+        First Name is required.
+        </div>
+      </div>
     </div>
 
     <div class="form-group">
       <label for="lastName">Last Name:</label>
-      <input type="text" [(ngModel)]="artist.lastName" name="lastName" id="lastName" required />
+      <input type="text" formControlName="lastName" name="lastName" id="lastName" required />
+      <div *ngIf="editArtistForm.get('lastName')?.touched && editArtistForm.get('lastName')?.invalid" class="error">
+        <div *ngIf="editArtistForm.get('lastName')?.errors?.['required']">
+        Last Name is required.
+        </div>
+      </div> 
     </div>
 
     <div class="form-group">
       <label for="nationality">Nationality:</label>
-      <input type="text" [(ngModel)]="artist.nationality" name="nationality" id="nationality" />
+      <input type="text" formControlName="nationality" name="nationality" id="nationality" />
     </div>
 
     <div class="form-group">
       <label for="dateOfBirth">Date of Birth:</label>
-      <input type="date" [(ngModel)]="artist.dateOfBirth" name="dateOfBirth" id="dateOfBirth" required />
-    </div>
-
-    <div class="form-group">
-      <label for="covers">Artist Covers:</label>
-      <div *ngFor="let cover of artist.artistCovers; let i = index">
-        <input type="text" [(ngModel)]="artist.artistCovers[i].coverId" name="cover{{i}}" placeholder="Cover Id" />
-      </div>
+      <input type="date" formControlName="dateOfBirth" name="dateOfBirth" id="dateOfBirth" required />
+      <div *ngIf="editArtistForm.get('dateOfBirth')?.touched && editArtistForm.get('dateOfBirth')?.invalid" class="error">
+        <div *ngIf="editArtistForm.get('dateOfBirth')?.errors?.['required']">
+        Date of Birth is required.
+        </div>
+      </div> 
     </div>
 
     <div class="button-group">

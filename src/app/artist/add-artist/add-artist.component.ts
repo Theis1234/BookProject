@@ -1,36 +1,46 @@
 import { Component } from '@angular/core';
-import { BookService } from '../../services/book.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Author } from '../../models/author.model';
-import { AuthorService } from '../../services/author.service';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CreateArtistDTO } from '../../models/create-artist-dto';
 import { ArtistService } from '../../services/artist.service';
 
 @Component({
   selector: 'app-add-artist',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './add-artist.component.html',
   styleUrl: './add-artist.component.css'
 })
 export class AddArtistComponent {
-  artist: CreateArtistDTO = {
-  firstName: '',
-  lastName: '',
-  nationality: '',
-  dateOfBirth: ''
-};
+  addArtistForm: FormGroup;
+  submitted = false;
+  
 
   constructor(
+    private fb: FormBuilder,
     private artistService: ArtistService, 
     private router: Router
-  ) {}
+  ) {
+    this.addArtistForm = this.fb.group({
+      firstName: [''],
+      lastName: [''],
+      nationality: [''],
+      dateOfBirth: ['',Validators.required]
+    })
+
+  }
 
   onSubmit() {
-    if (!this.artist) return;
+    if (this.addArtistForm.invalid){
+      this.addArtistForm.markAllAsTouched()
+      return;
+    };
 
-    this.artistService.createArtist(this.artist).subscribe({
+    this.submitted = true;
+
+    const artist: CreateArtistDTO = this.addArtistForm.value;
+
+    this.artistService.createArtist(artist).subscribe({
       next: () => {
         alert('Artist added successfully!');
         this.router.navigate(['/artists']);
