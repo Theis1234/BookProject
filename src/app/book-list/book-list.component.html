@@ -3,15 +3,15 @@
   <h2>Book List</h2>
   <button class="add-book-button" *ngIf="isAdminUser" [routerLink]="['/books/addbook']">Add Book</button>
   </div>
-
-  <div *ngIf="books.length === 0;  else showItems">
+  <app-book-search (search)="onSearch($event)"></app-book-search>
+  <div *ngIf="filteredBooks.length === 0; else showItems">
     There are no books to display.
   </div>
 
 </div>
 <ng-template #showItems>
   <div class="book-list">
-    @for (book of books; track book){
+    @for (book of filteredBooks; track book){
     <div class="book-card">
       <h3 class="book-title">{{ book.title }}</h3>
       <p class="book-genre"><strong>Genre:</strong> {{ book.genre }}</p>

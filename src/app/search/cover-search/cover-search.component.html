@@ -1,0 +1,11 @@
+<form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+  <input type="text" formControlName="title" placeholder="Search by Title" />
+
+  <select formControlName="digitalOnly">
+    <option value="">-- Digital Only? --</option>
+    <option value="true">Yes</option>
+    <option value="false">No</option>
+  </select>
+
+  <button type="submit">Search</button>
+</form>

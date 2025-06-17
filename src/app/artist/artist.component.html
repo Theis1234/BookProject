@@ -3,15 +3,15 @@
   <h2>Artists</h2>
   <button class="add-artist-button" *ngIf="isAdminUser" [routerLink]="['/artists/addartist']">Add Artist</button>
     </div>
-
-  <div *ngIf="artists.length === 0;  else showItems">
+<app-artist-search (search)="onSearch($event)"></app-artist-search>
+  <div *ngIf="filteredArtists.length === 0;  else showItems">
     There are no artists to display.
   </div>
   
 </div>
 <ng-template #showItems>
   <div class="artist-list">
-    @for(artist of artists; track artist){
+    @for(artist of filteredArtists; track artist){
     <div class="artist-card">
       <h3 class="artist-name-title">{{ artist.firstName }} {{ artist.lastName }}</h3>
       <h3 class="artist-nationality">Nationality: {{ artist.nationality }} </h3>

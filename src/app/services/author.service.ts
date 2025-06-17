@@ -24,6 +24,15 @@ export class AuthorService {
 
     return this.http.post<Author>(`${this.apiUrl}`, author, { headers });
   }
+    searchAuthors(firstName?: string, lastName?: string, nationality?: string): Observable<Author[]> {
+      let params: any = {};
+    
+      if (firstName) params.firstName = firstName;
+      if (lastName) params.lastName = lastName;
+      if (nationality) params.nationality = nationality;
+    
+      return this.http.get<Author[]>(this.apiUrl, { params });
+    }
 
   updateAuthor(id: number, author: Author): Observable<void> {
   const headers = this.ensureTokenAuthorization();

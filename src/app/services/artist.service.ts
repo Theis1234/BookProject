@@ -24,6 +24,15 @@ export class ArtistService {
 
     return this.http.post<Artist>(`${this.apiUrl}`, artist, { headers});
   }
+  searchArtists(firstName?: string, lastName?: string, nationality?: string): Observable<Artist[]> {
+    let params: any = {};
+  
+    if (firstName) params.firstName = firstName;
+    if (lastName) params.lastName = lastName;
+    if (nationality) params.nationality = nationality;
+  
+    return this.http.get<Artist[]>(this.apiUrl, { params });
+  }
 
   updateArtist(id: number, artist: Artist): Observable<void> {
 

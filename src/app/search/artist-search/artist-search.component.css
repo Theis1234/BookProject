@@ -1,0 +1,21 @@
+.search-form {
+  margin-bottom: 1rem;
+}
+
+.search-form input {
+  margin-right: 0.5rem;
+  padding: 0.4rem;
+}
+
+.search-form button {
+  padding: 0.5rem 1rem;
+}
+
+.search-results ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.search-results li {
+  padding: 0.3rem 0;
+}

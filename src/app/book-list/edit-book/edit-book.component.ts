@@ -57,6 +57,8 @@ export class EditBookComponent {
       return;
     };
 
+    this.submitted = true;
+
     const updatedBook: Book = {
           ...this.editBookForm.value,
           id: Number(this.route.snapshot.paramMap.get('id'))

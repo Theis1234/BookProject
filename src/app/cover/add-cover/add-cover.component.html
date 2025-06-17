@@ -1,36 +1,46 @@
-<div *ngIf="cover" class="cover-form-container">
+<div class="cover-form-container">
   <h2>Add Cover</h2>
-  <form (ngSubmit)="onSubmit()" #bookForm="ngForm" class="cover-form">
+  <form (ngSubmit)="onSubmit()" [formGroup]="addCoverForm" class="cover-form">
     <div class="form-group">
       <label for="title">Title:</label>
-      <input type="text" [(ngModel)]="cover.title" name="title" id="title" required />
+      <input type="text" formControlName="title"  name="title" id="title" required />
+        <div *ngIf="addCoverForm.get('title')?.touched && addCoverForm.get('title')?.invalid" class="error">
+        <div *ngIf="addCoverForm.get('title')?.errors?.['required']">
+        An book is required.
+        </div>
+      </div> 
     </div>
 
     <div class="form-group">
       <label for="digitalOnly">Digital Only</label>
-      <input type="checkbox" [(ngModel)]="cover.digitalOnly" name="digitalOnly" id="digitalOnly" required />
+      <input type="checkbox" formControlName="digitalOnly" name="digitalOnly" id="digitalOnly"/>
     </div>
 
    <div class="form-group">
   <label for="bookId">Made for Book:</label>
-  <select [(ngModel)]="cover.bookId" name="bookId" id="bookId" required>
-    <option *ngFor="let book of books" [ngValue]="book.id">
+  <select formControlName="bookId" name="bookId" id="bookId" required>
+    <option *ngFor="let book of books" [value]="book.id">
       {{ book.title }} (By {{ book.author.firstName }} {{ book.author.lastName}})
     </option>
   </select>
+     <div *ngIf="addCoverForm.get('bookId')?.touched && addCoverForm.get('bookId')?.invalid" class="error">
+        <div *ngIf="addCoverForm.get('bookId')?.errors?.['required']">
+        An book is required.
+        </div>
+      </div> 
 </div>
 
     <div class="form-group">
  <label>Artists:</label>
   <div *ngFor="let artist of artists">
-    <input
-      type="checkbox"
-      [value]="artist.id"
-      name="artistIds"
-      (change)="onArtistToggle($event)"
-    />
+    <input type="checkbox" [value]="artist.id" name="artistIds" (change)="onArtistToggle($event)"/>
     {{ artist.firstName }} {{ artist.lastName }}
   </div>
+        <div *ngIf="addCoverForm.get('artistIds')?.touched && addCoverForm.get('artistIds')?.invalid" class="error">
+        <div *ngIf="addCoverForm.get('artistIds')?.errors?.['required']">
+        An author is required.
+        </div>
+      </div> 
     </div>
     <div class="button-group">
       <button type="submit" class="btn btn-primary">Add Cover</button>

@@ -3,7 +3,7 @@ import { Book } from '../../models/book.model';
 import { BookService } from '../../services/book.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CoverService } from '../../services/cover.service';
 import { CoverDTO } from '../../models/cover-dto';
 import { Artist } from '../../models/artist.model';
@@ -11,28 +11,33 @@ import { ArtistService } from '../../services/artist.service';
 
 @Component({
   selector: 'app-add-cover',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './add-cover.component.html',
   styleUrl: './add-cover.component.css'
 })
 export class AddCoverComponent {
+
+  addCoverForm: FormGroup;
+  submitted = false;
   books: Book[] = [];
   artists: Artist[] = [];
 
-  cover: CoverDTO = {
-  title: '',
-  digitalOnly: false,
-  bookId: 0,
-  artistIds: []
-};
-
   constructor(
+    private fb: FormBuilder,
     private coverService: CoverService, 
     private bookService: BookService,
     private artistService: ArtistService,
     private router: Router,
-  ) {}
+  ) {
+     this.addCoverForm = this.fb.group({
+      title: ['', Validators.required],
+      digitalOnly: [false],
+      bookId: [null, Validators.required],
+      artistIds: this.fb.array([], Validators.required)
+    });
+  }
   ngOnInit() {
+
   this.bookService.getBooks().subscribe(books => {
     this.books = books;
   });
@@ -41,14 +46,22 @@ export class AddCoverComponent {
   });
 }
   onSubmit() {
-    if (!this.cover) return;
+      if (this.addCoverForm.invalid){
+      this.addCoverForm.markAllAsTouched()
+      return;
+    };    
 
-    if (this.cover.artistIds.length === 0) {
-    alert('Please select at least one artist.');
-    return;
+  this.submitted = true;
+
+  const createdCover: CoverDTO = this.addCoverForm.value;
+
+  const artistIds = this.addCoverForm.get('artistIds') as FormArray;
+  if (artistIds.length === 0) {
+  alert('Please select at least one artist.');
+  return;
   }
 
-    this.coverService.createCover(this.cover).subscribe({
+    this.coverService.createCover(createdCover).subscribe({
       next: () => {
         alert('Cover added successfully!');
         this.router.navigate(['/covers']);
@@ -57,14 +70,17 @@ export class AddCoverComponent {
     });
   }
   onArtistToggle(event: Event) {
-  const checkbox = event.target as HTMLInputElement;
-  const artistId = parseInt(checkbox.value);
+    const checkbox = event.target as HTMLInputElement;
+    const artistId = parseInt(checkbox.value, 10);
+    const artistIds = this.addCoverForm.get('artistIds') as FormArray;
 
-  if (checkbox.checked) {
-    this.cover.artistIds.push(artistId);
-    console.log('checkbox was checked')
-  } else {
-    this.cover.artistIds = this.cover.artistIds.filter(id => id !== artistId);
+    if (checkbox.checked) {
+      artistIds.push(this.fb.control(artistId));
+    } else {
+      const index = artistIds.controls.findIndex(ctrl => ctrl.value === artistId);
+      if (index >= 0) {
+        artistIds.removeAt(index);
+      }
+    }
   }
-}
 }

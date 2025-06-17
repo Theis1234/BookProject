@@ -1,0 +1,6 @@
+<form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+  <input type="text" formControlName="firstName" placeholder="Search by First Name">
+  <input type="text" formControlName="lastName" placeholder="Search by Last Name">
+  <input type="text" formControlName="nationality" placeholder="Search by Nationality">
+  <button type="submit">Search</button>
+</form>

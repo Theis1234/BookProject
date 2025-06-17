@@ -25,6 +25,14 @@ export class CoverService {
   
     return this.http.post<Cover>(`${this.apiUrl}`, cover, { headers});
   }
+  searchCovers(title?: string, digitalOnly?: boolean): Observable<Cover[]> {
+  let params: any = {};
+
+  if (title) params.title = title;
+  if (digitalOnly !== undefined) params.digitalOnly = digitalOnly;
+
+  return this.http.get<Cover[]>(this.apiUrl, { params });
+}
   updateCover(id: number, cover: CoverDTO): Observable<void> {
     const headers = this.ensureTokenAuthorization();
 

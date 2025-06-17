@@ -3,97 +3,127 @@ import { Book } from '../../models/book.model';
 import { BookService } from '../../services/book.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Cover } from '../../models/cover.model';
 import { CoverService } from '../../services/cover.service';
 import { ArtistService } from '../../services/artist.service';
 import { Artist } from '../../models/artist.model';
+import { CoverDTO } from '../../models/cover-dto';
 
 @Component({
   selector: 'app-edit-cover',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './edit-cover.component.html',
-  styleUrl: './edit-cover.component.css'
+  styleUrl: './edit-cover.component.css',
 })
 export class EditCoverComponent {
+  editCoverForm: FormGroup;
+  submitted = false;
   books: Book[] = [];
   artists: Artist[] = [];
   artistIds: number[] = [];
   cover: Cover | null = null;
 
   constructor(
-    private coverService: CoverService, 
+    private fb: FormBuilder,
+    private coverService: CoverService,
     private bookService: BookService,
     private artistService: ArtistService,
-    private router: Router, 
+    private router: Router,
     private route: ActivatedRoute
-  ) {}
-
-  ngOnInit(): void {
-  const id = Number(this.route.snapshot.paramMap.get('id'));
-
-  this.coverService.getCoverById(id).subscribe({
-    next: (data) => {
-      this.cover = data;
-
-      this.bookService.getBooks().subscribe(books => {
-        this.books = books;
-      });
-
-      this.artistService.getArtists().subscribe(artists => {
-        this.artists = artists;
-
-        this.artistIds = data.artistCovers?.map(ac => ac.artistId) ?? [];
-      });
-    },
-    error: () => alert('Error loading cover')
-  });
-}
-
-  onSubmit() {
-    if (!this.cover) return;
-
-    if (this.artists.length === 0) {
-    alert('Please select at least one artist.');
-    return;
+  ) {
+    this.editCoverForm = this.fb.group({
+      title: ['', Validators.required],
+      digitalOnly: [false],
+      bookId: [null, Validators.required],
+      artistIds: this.fb.array([], Validators.required),
+    });
   }
 
-    const coverDto = {
-    title: this.cover.title,
-    digitalOnly: this.cover.digitalOnly,
-    bookId: this.cover.bookId,
-    artistIds: this.artistIds
-  };
+  ngOnInit(): void {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
 
-    this.coverService.updateCover(this.cover.id, coverDto).subscribe({
+    this.coverService.getCoverById(id).subscribe({
+      next: (data) => {
+        this.cover = data;
+        this.editCoverForm.patchValue(data);
+
+        this.bookService.getBooks().subscribe((books) => {
+          this.books = books;
+        });
+
+        this.artistService.getArtists().subscribe((artists) => {
+          this.artists = artists;
+          const artistFormArray = this.editCoverForm.get('artistIds') as FormArray;
+          const selectedArtistIds = data.artistCovers?.map((ac) => ac.artistId) ?? [];
+
+          selectedArtistIds.forEach((id) => {
+          artistFormArray.push(this.fb.control(id));
+        });
+
+        this.artistIds = selectedArtistIds;
+        });
+      },
+      error: () => alert('Error loading cover'),
+    });
+  }
+
+  onSubmit() {
+    if (this.editCoverForm.invalid) {
+      this.editCoverForm.markAllAsTouched();
+      return;
+    }
+
+    this.submitted = true;
+
+    const updatedCover: CoverDTO = this.editCoverForm.value;
+
+  const artistIds = this.editCoverForm.get('artistIds') as FormArray;  
+    if (this.artists.length === 0) {
+      alert('Please select at least one artist.');
+      return;
+    }
+    
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+
+    this.coverService.updateCover(id, updatedCover).subscribe({
       next: () => {
         alert('Cover updated successfully!');
         this.router.navigate(['/covers']);
       },
-      error: () => alert('Failed to update cover.')
+      error: () => alert('Failed to update cover.'),
     });
   }
   onDelete() {
-  if (!this.cover) return;
+    if (!this.cover) return;
 
-  this.coverService.deleteCover(this.cover.id).subscribe({
+    this.coverService.deleteCover(this.cover.id).subscribe({
       next: () => {
         alert('Cover deleted successfully!');
         this.router.navigate(['/covers']);
       },
-      error: () => alert('Failed to delete cover.')
+      error: () => alert('Failed to delete cover.'),
     });
-}
-onArtistToggle(event: Event) {
-  const checkbox = event.target as HTMLInputElement;
-  const artistId = Number(checkbox.value);
-
-  if (checkbox.checked) {
-    if (!this.artistIds.includes(artistId)) {
-      this.artistIds.push(artistId);
-    }
-  } else {
-    this.artistIds = this.artistIds.filter(id => id !== artistId);
   }
-}
+  onArtistToggle(event: Event) {
+    const checkbox = event.target as HTMLInputElement;
+    const artistId = parseInt(checkbox.value, 10);
+    const artistIds = this.editCoverForm.get('artistIds') as FormArray;
+
+    if (checkbox.checked) {
+      artistIds.push(this.fb.control(artistId));
+    } else {
+      const index = artistIds.controls.findIndex(ctrl => ctrl.value === artistId);
+      if (index >= 0) {
+        artistIds.removeAt(index);
+      }
+    }
+  }
 }

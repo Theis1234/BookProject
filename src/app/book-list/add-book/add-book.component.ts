@@ -15,12 +15,7 @@ import { CreateBookDTO } from '../../models/create-book-dto';
   styleUrl: './add-book.component.css'
 })
 export class AddBookComponent {
-allowOnlyNumbers(event: KeyboardEvent): void {
-const key = event.key;
-  if (!/^\d$/.test(key)) {
-    event.preventDefault();
-  }
-}
+
   addBookForm: FormGroup;
   submitted = false;
 
@@ -68,4 +63,10 @@ const key = event.key;
       error: () => alert('Failed to add book.')
     });
   }
+  allowOnlyNumbers(event: KeyboardEvent): void {
+const key = event.key;
+  if (!/^\d$/.test(key)) {
+    event.preventDefault();
+  }
+}
 }

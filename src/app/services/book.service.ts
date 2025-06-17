@@ -29,6 +29,15 @@ export class BookService {
 
     return this.http.put<void>(`${this.apiUrl}/${id}`, book, { headers });
   }
+  searchBooks(title?: string, genre?: string, authorName?: string): Observable<Book[]> {
+  let params: any = {};
+
+  if (title) params.title = title;
+  if (genre) params.genre = genre;
+  if (authorName) params.authorName = authorName;
+
+  return this.http.get<Book[]>(this.apiUrl, { params });
+}
 
   deleteBook(id: number): Observable<void> {
     const headers = this.ensureTokenAuthorization();
