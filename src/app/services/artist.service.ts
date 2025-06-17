@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Artist } from '../models/artist.model';
 import { CreateArtistDTO } from '../models/create-artist-dto';
@@ -11,7 +11,7 @@ export class ArtistService {
 
   private apiUrl = 'http://localhost:5107/api/artists'
 
-  constructor(private http: HttpClient) { }
+  private http = inject(HttpClient);
 
   getArtists(): Observable<Artist[]> {
     return this.http.get<Artist[]>(this.apiUrl);

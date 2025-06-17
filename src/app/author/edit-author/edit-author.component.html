@@ -8,6 +8,16 @@
         <div *ngIf="editAuthorForm.get('firstName')?.errors?.['required']">
         First Name is required.
         </div>
+         <div
+          *ngIf="editAuthorForm.get('firstName')?.touched && editAuthorForm.get('firstName')?.errors?.['maxlength']"
+          class="error"
+        >
+          First name cannot exceed
+          {{ editAuthorForm.get('firstName')?.errors?.['maxlength']?.requiredLength }}
+          characters. You entered
+          {{ editAuthorForm.get('firstName')?.errors?.['maxlength']?.actualLength }}
+          characters.
+        </div>
       </div>
     </div>
 
@@ -18,21 +28,57 @@
         <div *ngIf="editAuthorForm.get('lastName')?.errors?.['required']">
         Last Name is required.
         </div>
+        <div
+          *ngIf="editAuthorForm.get('lastName')?.touched && editAuthorForm.get('lastName')?.errors?.['maxlength']"
+          class="error"
+        >
+          Last name cannot exceed
+          {{ editAuthorForm.get('lastName')?.errors?.['maxlength']?.requiredLength }}
+          characters. You entered
+          {{ editAuthorForm.get('lastName')?.errors?.['maxlength']?.actualLength }}
+          characters.
+        </div>
       </div> 
     </div>
 
     <div class="form-group">
       <label for="nationality">Nationality:</label>
       <input type="text" formControlName="nationality" name="nationality" id="nationality" />
+      <div
+          *ngIf="editAuthorForm.get('nationality')?.touched && editAuthorForm.get('nationality')?.errors?.['maxlength']"
+          class="error"
+        >
+          Last name cannot exceed
+          {{ editAuthorForm.get('nationality')?.errors?.['maxlength']?.requiredLength }}
+          characters. You entered
+          {{ editAuthorForm.get('nationality')?.errors?.['maxlength']?.actualLength }}
+          characters.
+        </div>
     </div>
     <div class="form-group">
       <label for="last-publish">Last Published Book:</label>
       <input type="text" formControlName="lastPublishedBook" name="last-publish" id="last-publish" />
+      <div
+        *ngIf="editAuthorForm.get('lastPublishedBook')?.touched && editAuthorForm.get('lastPublishedBook')?.errors?.['maxlength']"
+        class="error"
+      >
+        Last name cannot exceed
+        {{ editAuthorForm.get('lastPublishedBook')?.errors?.['maxlength']?.requiredLength }}
+        characters. You entered
+        {{ editAuthorForm.get('lastPublishedBook')?.errors?.['maxlength']?.actualLength }}
+        characters.
+      </div>
     </div>
 
     <div class="form-group">
       <label for="number-of-books">Number of Books Published:</label>
-      <input type="text" formControlName="numberOfBooksPublished" name="number-of-books" id="number-of-books" />
+      <input type="number" formControlName="numberOfBooksPublished" name="number-of-books" id="number-of-books" />
+      <div
+        *ngIf="editAuthorForm.get('numberOfBooksPublished')?.errors?.['max']"
+        class="error"
+      >
+        Number of pages must not exceed 100000.
+      </div>
     </div>
 
     <div class="form-group">

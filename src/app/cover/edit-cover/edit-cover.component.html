@@ -8,6 +8,16 @@
         <div *ngIf="editCoverForm.get('title')?.errors?.['required']">
         A Title is required.
         </div>
+        <div
+          *ngIf="editCoverForm.get('title')?.touched && editCoverForm.get('title')?.errors?.['maxlength']"
+          class="error"
+        >
+          Title cannot exceed
+          {{ editCoverForm.get('title')?.errors?.['maxlength']?.requiredLength }}
+          characters. You entered
+          {{ editCoverForm.get('title')?.errors?.['maxlength']?.actualLength }}
+          characters.
+        </div>
       </div> 
     </div>
 
@@ -25,7 +35,7 @@
   </select>
    <div *ngIf="editCoverForm.get('bookId')?.touched && editCoverForm.get('bookId')?.invalid" class="error">
         <div *ngIf="editCoverForm.get('bookId')?.errors?.['required']">
-        An book is required.
+        A book is required.
         </div>
       </div> 
 </div>

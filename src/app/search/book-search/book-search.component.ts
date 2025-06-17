@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { Author } from '../../models/author.model';
 import {
   FormBuilder,
@@ -18,17 +18,16 @@ import { CommonModule } from '@angular/common';
 })
 export class BookSearchComponent implements OnInit {
   @Output() search = new EventEmitter<{ title?: string; genre?: string; authorName?: string;}>();
-  searchForm: FormGroup;
   books: Book[] = [];
   hasSearched = false;
+  private fb = inject(FormBuilder);
 
-  constructor(private fb: FormBuilder) {
-    this.searchForm = this.fb.group({
+    searchForm: FormGroup = this.fb.group({
       title: [''],
       genre: [''],
       authorName: [''],
     });
-  }
+  
 
   ngOnInit(): void {}
 

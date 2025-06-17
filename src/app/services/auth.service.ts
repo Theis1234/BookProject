@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable, tap, BehaviorSubject  } from 'rxjs';
 import { jwtDecode } from 'jwt-decode'
 
@@ -18,7 +18,7 @@ export class AuthService {
   loggedIn$ = this.loggedInSubject.asObservable();
   role$ = this.roleSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
 
   private isTokenValid(): boolean {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Book } from '../../models/book.model';
 import { BookService } from '../../services/book.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -24,28 +24,25 @@ import { CoverDTO } from '../../models/cover-dto';
   styleUrl: './edit-cover.component.css',
 })
 export class EditCoverComponent {
-  editCoverForm: FormGroup;
   submitted = false;
   books: Book[] = [];
   artists: Artist[] = [];
   artistIds: number[] = [];
   cover: Cover | null = null;
 
-  constructor(
-    private fb: FormBuilder,
-    private coverService: CoverService,
-    private bookService: BookService,
-    private artistService: ArtistService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
-    this.editCoverForm = this.fb.group({
-      title: ['', Validators.required],
-      digitalOnly: [false],
-      bookId: [null, Validators.required],
-      artistIds: this.fb.array([], Validators.required),
-    });
-  }
+  private bookService = inject(BookService);
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
+  private coverService = inject(CoverService);
+  private artistService = inject(ArtistService);
+  private route = inject(ActivatedRoute);
+
+  editCoverForm: FormGroup = this.fb.group({
+    title: ['', [Validators.required, Validators.maxLength(50)]],
+    digitalOnly: [false],
+    bookId: [null, [Validators.required]],
+    artistIds: this.fb.array([], [Validators.required]),
+  });
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -61,14 +58,17 @@ export class EditCoverComponent {
 
         this.artistService.getArtists().subscribe((artists) => {
           this.artists = artists;
-          const artistFormArray = this.editCoverForm.get('artistIds') as FormArray;
-          const selectedArtistIds = data.artistCovers?.map((ac) => ac.artistId) ?? [];
+          const artistFormArray = this.editCoverForm.get(
+            'artistIds'
+          ) as FormArray;
+          const selectedArtistIds =
+            data.artistCovers?.map((ac) => ac.artistId) ?? [];
 
           selectedArtistIds.forEach((id) => {
-          artistFormArray.push(this.fb.control(id));
-        });
+            artistFormArray.push(this.fb.control(id));
+          });
 
-        this.artistIds = selectedArtistIds;
+          this.artistIds = selectedArtistIds;
         });
       },
       error: () => alert('Error loading cover'),
@@ -85,12 +85,12 @@ export class EditCoverComponent {
 
     const updatedCover: CoverDTO = this.editCoverForm.value;
 
-  const artistIds = this.editCoverForm.get('artistIds') as FormArray;  
+    const artistIds = this.editCoverForm.get('artistIds') as FormArray;
     if (this.artists.length === 0) {
       alert('Please select at least one artist.');
       return;
     }
-    
+
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
     this.coverService.updateCover(id, updatedCover).subscribe({
@@ -120,7 +120,9 @@ export class EditCoverComponent {
     if (checkbox.checked) {
       artistIds.push(this.fb.control(artistId));
     } else {
-      const index = artistIds.controls.findIndex(ctrl => ctrl.value === artistId);
+      const index = artistIds.controls.findIndex(
+        (ctrl) => ctrl.value === artistId
+      );
       if (index >= 0) {
         artistIds.removeAt(index);
       }

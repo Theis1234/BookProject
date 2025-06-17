@@ -3,47 +3,141 @@
   <form (ngSubmit)="onSubmit()" [formGroup]="addAuthorForm" class="author-form">
     <div class="form-group">
       <label for="firstName">First Name:</label>
-      <input type="text" formControlName="firstName" name="firstName" id="firstName"/>
-      <div *ngIf="addAuthorForm.get('firstName')?.touched && addAuthorForm.get('firstName')?.invalid" class="error">
+      <input
+        type="text"
+        formControlName="firstName"
+        name="firstName"
+        id="firstName"
+      />
+      <div
+        *ngIf="
+          addAuthorForm.get('firstName')?.touched &&
+          addAuthorForm.get('firstName')?.invalid
+        "
+        class="error"
+      >
         <div *ngIf="addAuthorForm.get('firstName')?.errors?.['required']">
-        First Name is required.
+          First Name is required.
+        </div>
+        <div
+          *ngIf="addAuthorForm.get('firstName')?.touched && addAuthorForm.get('firstName')?.errors?.['maxlength']"
+          class="error"
+        >
+          First name cannot exceed
+          {{ addAuthorForm.get('firstName')?.errors?.['maxlength']?.requiredLength }}
+          characters. You entered
+          {{ addAuthorForm.get('firstName')?.errors?.['maxlength']?.actualLength }}
+          characters.
         </div>
       </div>
-    </div> 
+    </div>
 
-      <div class="form-group">
-        <label for="lastName">Last Name:</label>
-        <input type="text" formControlName="lastName" name="lastName" id="lastName"/>
-        <div *ngIf="addAuthorForm.get('lastName')?.touched && addAuthorForm.get('lastName')?.invalid" class="error">
+    <div class="form-group">
+      <label for="lastName">Last Name:</label>
+      <input
+        type="text"
+        formControlName="lastName"
+        name="lastName"
+        id="lastName"
+      />
+      <div
+        *ngIf="
+          addAuthorForm.get('lastName')?.touched &&
+          addAuthorForm.get('lastName')?.invalid
+        "
+        class="error"
+      >
         <div *ngIf="addAuthorForm.get('lastName')?.errors?.['required']">
-        Last Name is required.
+          Last Name is required.
         </div>
-      </div> 
-    </div> 
+        <div
+          *ngIf="addAuthorForm.get('lastName')?.touched && addAuthorForm.get('lastName')?.errors?.['maxlength']"
+          class="error"
+        >
+          Last name cannot exceed
+          {{ addAuthorForm.get('lastName')?.errors?.['maxlength']?.requiredLength }}
+          characters. You entered
+          {{ addAuthorForm.get('lastName')?.errors?.['maxlength']?.actualLength }}
+          characters.
+        </div>
+      </div>
+    </div>
 
     <div class="form-group">
       <label for="nationality">Nationality:</label>
-      <input type="text" formControlName="nationality" name="nationality" id="nationality"/>
+      <input
+        type="text"
+        formControlName="nationality"
+        name="nationality"
+        id="nationality"
+      />
+      <div
+        *ngIf="addAuthorForm.get('nationality')?.touched && addAuthorForm.get('nationality')?.errors?.['maxlength']"
+        class="error"
+      >
+        Last name cannot exceed
+        {{ addAuthorForm.get('nationality')?.errors?.['maxlength']?.requiredLength }}
+        characters. You entered
+        {{ addAuthorForm.get('nationality')?.errors?.['maxlength']?.actualLength }}
+        characters.
+      </div>
     </div>
 
     <div class="form-group">
       <label for="date-of-birth">Date of Birth:</label>
-      <input type="date" formControlName="dateOfBirth" name="date-of-birth" id="date-of-birth"/>
-      <div *ngIf="addAuthorForm.get('dateOfBirth')?.touched && addAuthorForm.get('dateOfBirth')?.invalid" class="error">
+      <input
+        type="date"
+        formControlName="dateOfBirth"
+        name="date-of-birth"
+        id="date-of-birth"
+      />
+      <div
+        *ngIf="
+          addAuthorForm.get('dateOfBirth')?.touched &&
+          addAuthorForm.get('dateOfBirth')?.invalid
+        "
+        class="error"
+      >
         <div *ngIf="addAuthorForm.get('dateOfBirth')?.errors?.['required']">
-        Date of Birth is required.
+          Date of Birth is required.
         </div>
-      </div> 
+      </div>
     </div>
 
-     <div class="form-group">
+    <div class="form-group">
       <label for="number-of-books">Number of Books Published</label>
-      <input type="text" formControlName="numberOfBooksPublished" name="number-of-books" id="number-of-books" />
+      <input
+        type="number"
+        formControlName="numberOfBooksPublished"
+        name="number-of-books"
+        id="number-of-books"
+      />
+      <div
+        *ngIf="addAuthorForm.get('numberOfBooksPublished')?.errors?.['max']"
+        class="error"
+      >
+        Number of pages must not exceed 100000.
+      </div>
     </div>
 
     <div class="form-group">
       <label for="lastPublishedBook">Last Published Book:</label>
-      <input type="text" formControlName="lastPublishedBook" name="lastPublishedBook" id="lastPublishedBook"/>
+      <input
+        type="text"
+        formControlName="lastPublishedBook"
+        name="lastPublishedBook"
+        id="lastPublishedBook"
+      />
+      <div
+        *ngIf="addAuthorForm.get('lastPublishedBook')?.touched && addAuthorForm.get('lastPublishedBook')?.errors?.['maxlength']"
+        class="error"
+      >
+        Last name cannot exceed
+        {{ addAuthorForm.get('lastPublishedBook')?.errors?.['maxlength']?.requiredLength }}
+        characters. You entered
+        {{ addAuthorForm.get('lastPublishedBook')?.errors?.['maxlength']?.actualLength }}
+        characters.
+      </div>
     </div>
 
     <div class="button-group">

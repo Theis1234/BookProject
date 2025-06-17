@@ -1,9 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Book } from '../../models/book.model';
 import { BookService } from '../../services/book.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Author } from '../../models/author.model';
 import { AuthorService } from '../../services/author.service';
 import { CreateBookDTO } from '../../models/create-book-dto';
@@ -12,44 +18,37 @@ import { CreateBookDTO } from '../../models/create-book-dto';
   selector: 'app-add-book',
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './add-book.component.html',
-  styleUrl: './add-book.component.css'
+  styleUrl: './add-book.component.css',
 })
 export class AddBookComponent {
-
-  addBookForm: FormGroup;
   submitted = false;
 
   authors: Author[] = [];
+  private bookService = inject(BookService);
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
+  private authorService = inject(AuthorService);
 
+  addBookForm: FormGroup = this.fb.group({
+    title: ['', [Validators.maxLength(50)]],
+    genre: ['', [Validators.maxLength(30)]],
+    publishedDate: ['', [Validators.required]],
+    numberOfPages: [0, [Validators.required, Validators.min(1), Validators.max(100000)]],
+    basePrice: [0, [Validators.required, Validators.min(0), Validators.max(100000)]],
+    authorId: [null, [Validators.required]],
+  });
 
-  constructor(
-    private fb: FormBuilder,
-    private bookService: BookService, 
-    private authorService: AuthorService,
-    private router: Router
-  ) {
-    this.addBookForm = this.fb.group({
-      title: [''],
-      genre: [''],
-      publishedDate: ['', Validators.required],
-      numberOfPages: [0, [Validators.required, Validators.min(1)]],
-      basePrice: [0, [Validators.required, Validators.min(0)]],
-      authorId: [null, Validators.required]
+  ngOnInit() {
+    this.authorService.getAuthors().subscribe((authors) => {
+      this.authors = authors;
     });
   }
-  
-  ngOnInit() {
-  this.authorService.getAuthors().subscribe(authors => {
-    this.authors = authors;
-  });
-}
-
 
   onSubmit() {
-    if (this.addBookForm.invalid){
-      this.addBookForm.markAllAsTouched()
+    if (this.addBookForm.invalid) {
+      this.addBookForm.markAllAsTouched();
       return;
-    };
+    }
 
     this.submitted = true;
 
@@ -60,13 +59,13 @@ export class AddBookComponent {
         alert('Book added successfully!');
         this.router.navigate(['/books']);
       },
-      error: () => alert('Failed to add book.')
+      error: () => alert('Failed to add book.'),
     });
   }
   allowOnlyNumbers(event: KeyboardEvent): void {
-const key = event.key;
-  if (!/^\d$/.test(key)) {
-    event.preventDefault();
+    const key = event.key;
+    if (!/^\d$/.test(key)) {
+      event.preventDefault();
+    }
   }
-}
 }

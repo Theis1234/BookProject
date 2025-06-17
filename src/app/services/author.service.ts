@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Author } from '../models/author.model';
 import { CreateAuthorDTO } from '../models/create-author-dto';
@@ -11,7 +11,7 @@ export class AuthorService {
 
   private apiUrl = 'http://localhost:5107/api/authors'
 
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   getAuthors(): Observable<Author[]> {
     return this.http.get<Author[]>(this.apiUrl);

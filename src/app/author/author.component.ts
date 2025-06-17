@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Author } from '../models/author.model';
 import { AuthorService } from '../services/author.service';
 import { CommonModule } from '@angular/common';
@@ -18,8 +18,8 @@ export class AuthorComponent implements OnInit {
     
     authors: Author[] = [];
     filteredAuthors: Author[] = [];
-
-    constructor(private authorService: AuthorService, private authService: AuthService) {}
+    private authorService = inject(AuthorService);
+    private authService = inject(AuthService);
   
     ngOnInit(): void {
       this.authorService.getAuthors().subscribe({

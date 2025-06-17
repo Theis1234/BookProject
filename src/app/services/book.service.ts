@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Book } from '../models/book.model';
 import { CreateBookDTO } from '../models/create-book-dto';
@@ -11,7 +11,7 @@ export class BookService {
 
   private apiUrl = 'http://localhost:5107/api/books'
 
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   getBooks(): Observable<Book[]> {
     return this.http.get<Book[]>(this.apiUrl);

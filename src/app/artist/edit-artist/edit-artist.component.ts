@@ -1,6 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ArtistService } from '../../services/artist.service';
 import { Artist } from '../../models/artist.model';
@@ -9,66 +15,63 @@ import { Artist } from '../../models/artist.model';
   selector: 'app-edit-artist',
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './edit-artist.component.html',
-  styleUrl: './edit-artist.component.css'
+  styleUrl: './edit-artist.component.css',
 })
-export class EditArtistComponent implements OnInit{
-  editArtistForm: FormGroup;
+export class EditArtistComponent implements OnInit {
   submitted = false;
   artist: Artist | null = null;
 
-  constructor(
-    private fb: FormBuilder,
-    private artistService: ArtistService, 
-    private router: Router, 
-    private route: ActivatedRoute
-  ) {
-      this.editArtistForm = this.fb.group({
-      firstName: ['',Validators.required],
-      lastName: ['',Validators.required],
-      nationality: [''],
-      dateOfBirth: ['',Validators.required],
-      artistCovers: this.fb.array([])
-    })
+  private fb = inject(FormBuilder);
+  private artistService = inject(ArtistService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
-  }
+  editArtistForm: FormGroup = this.fb.group({
+    firstName: ['', [Validators.required, Validators.maxLength(50)]],
+    lastName: ['', [Validators.required, Validators.maxLength(50)]],
+    nationality: ['', [Validators.maxLength(30)]],
+    dateOfBirth: ['', [Validators.required]],
+    artistCovers: this.fb.array([]),
+  });
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.artistService.getArtistById(id).subscribe({
       next: (data) => {
+        this.artist = data;
         this.editArtistForm.patchValue(data);
       },
-      error: () => alert('Error loading artist')
+      error: () => alert('Error loading artist'),
     });
   }
   onSubmit() {
-     if (this.editArtistForm.invalid){
-      this.editArtistForm.markAllAsTouched()
+    if (this.editArtistForm.invalid) {
+      this.editArtistForm.markAllAsTouched();
       return;
-    };
+    }
 
     const updatedArtist: Artist = {
-          ...this.editArtistForm.value,
-          id: Number(this.route.snapshot.paramMap.get('id'))
-        };
+      ...this.editArtistForm.value,
+      id: Number(this.route.snapshot.paramMap.get('id')),
+    };
 
     this.artistService.updateArtist(updatedArtist.id, updatedArtist).subscribe({
       next: () => {
         alert('Artist updated successfully!');
         this.router.navigate(['/artists']);
       },
-      error: () => alert('Failed to update artist.')
+      error: () => alert('Failed to update artist.'),
     });
   }
   onDelete() {
-  if (!this.artist) return;
+    if (!this.artist) return;
 
-  this.artistService.deleteArtist(this.artist.id).subscribe({
+    this.artistService.deleteArtist(this.artist.id).subscribe({
       next: () => {
         alert('Artist deleted successfully!');
         this.router.navigate(['/artists']);
       },
-      error: () => alert('Failed to delete artist.')
+      error: () => alert('Failed to delete artist.'),
     });
-}
+  }
 }
