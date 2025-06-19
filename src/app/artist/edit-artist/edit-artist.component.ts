@@ -36,7 +36,7 @@ export class EditArtistComponent implements OnInit {
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.artistService.getArtistById(id).subscribe({
+    this.artistService.getById(id).subscribe({
       next: (data) => {
         this.artist = data;
         this.editArtistForm.patchValue(data);
@@ -66,7 +66,7 @@ export class EditArtistComponent implements OnInit {
   onDelete() {
     if (!this.artist) return;
 
-    this.artistService.deleteArtist(this.artist.id).subscribe({
+    this.artistService.delete(this.artist.id).subscribe({
       next: () => {
         alert('Artist deleted successfully!');
         this.router.navigate(['/artists']);

@@ -47,16 +47,16 @@ export class EditCoverComponent {
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
-    this.coverService.getCoverById(id).subscribe({
+    this.coverService.getById(id).subscribe({
       next: (data) => {
         this.cover = data;
         this.editCoverForm.patchValue(data);
 
-        this.bookService.getBooks().subscribe((books) => {
+        this.bookService.getAll().subscribe((books) => {
           this.books = books;
         });
 
-        this.artistService.getArtists().subscribe((artists) => {
+        this.artistService.getAll().subscribe((artists) => {
           this.artists = artists;
           const artistFormArray = this.editCoverForm.get(
             'artistIds'
@@ -104,7 +104,7 @@ export class EditCoverComponent {
   onDelete() {
     if (!this.cover) return;
 
-    this.coverService.deleteCover(this.cover.id).subscribe({
+    this.coverService.delete(this.cover.id).subscribe({
       next: () => {
         alert('Cover deleted successfully!');
         this.router.navigate(['/covers']);

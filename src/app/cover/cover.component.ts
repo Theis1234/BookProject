@@ -22,7 +22,7 @@ export class CoverComponent implements OnInit {
   private authService = inject(AuthService);
 
   ngOnInit(): void {
-    this.coverService.getCovers().subscribe({
+    this.coverService.getAll().subscribe({
       next: (covers) => {
         this.covers = covers;
         this.filteredCovers = covers;

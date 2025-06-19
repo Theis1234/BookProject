@@ -34,14 +34,14 @@ export class EditBookComponent {
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.bookService.getBookById(id).subscribe({
+    this.bookService.getById(id).subscribe({
       next: (data) => {
         this.book = data;
         this.editBookForm.patchValue(data);
       },
       error: () => alert('Error loading book'),
     });
-    this.authorService.getAuthors().subscribe({
+    this.authorService.getAll().subscribe({
       next: (authors) => {
         this.authors = authors;
       },
@@ -72,7 +72,7 @@ export class EditBookComponent {
   onDelete() {
     if (!this.book) return;
 
-    this.bookService.deleteBook(this.book.id).subscribe({
+    this.bookService.delete(this.book.id).subscribe({
       next: () => {
         alert('Book deleted successfully!');
         this.router.navigate(['/books']);

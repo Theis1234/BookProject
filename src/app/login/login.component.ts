@@ -36,7 +36,7 @@ export class LoginComponent {
         this.router.navigateByUrl('/');
       },
       error: (err) => {
-        this.errorMessage = 'Login failed';
+        this.errorMessage = err?.error?.message || 'Login failed';
       },
     });
   }

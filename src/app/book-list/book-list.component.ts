@@ -22,7 +22,7 @@ export class BookListComponent implements OnInit {
   private authService = inject(AuthService);
   
   ngOnInit(): void {
-    this.bookService.getBooks().subscribe({
+    this.bookService.getAll().subscribe({
       next: (books) => {
         this.books = books;
         this.filteredBooks = books;

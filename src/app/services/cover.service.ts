@@ -4,54 +4,30 @@ import { Observable } from 'rxjs';
 import { Book } from '../models/book.model';
 import { Cover } from '../models/cover.model';
 import { CoverDTO } from '../models/cover-dto';
+import { BaseService } from './base.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class CoverService {
+export class CoverService extends BaseService<Cover> {
+  protected apiUrl = 'http://localhost:5107/api/covers';
 
-  private apiUrl = 'http://localhost:5107/api/covers'
-
-  private http = inject(HttpClient);
-
-  getCovers(): Observable<Cover[]> {
-    return this.http.get<Cover[]>(this.apiUrl);
-  }
-  getCoverById(id: number): Observable<Cover> {
-    return this.http.get<Cover>(`${this.apiUrl}/${id}`);
-  }
-  createCover(cover : CoverDTO): Observable<Cover> {
-    const headers = this.ensureTokenAuthorization();
-  
-    return this.http.post<Cover>(`${this.apiUrl}`, cover, { headers});
-  }
+    createCover(cover: CoverDTO): Observable<Cover> {
+      return this.http.post<Cover>(`${this.apiUrl}`, cover, {
+        headers: this.getAuthHeaders(),
+      });
+    }
   searchCovers(title?: string, digitalOnly?: boolean): Observable<Cover[]> {
-  let params: any = {};
+    let params: any = {};
 
-  if (title) params.title = title;
-  if (digitalOnly !== undefined) params.digitalOnly = digitalOnly;
+    if (title) params.title = title;
+    if (digitalOnly !== undefined) params.digitalOnly = digitalOnly;
 
-  return this.http.get<Cover[]>(this.apiUrl, { params });
-}
+    return this.http.get<Cover[]>(this.apiUrl, { params });
+  }
   updateCover(id: number, cover: CoverDTO): Observable<void> {
-    const headers = this.ensureTokenAuthorization();
-
-    return this.http.put<void>(`${this.apiUrl}/${id}`, cover, { headers });
-  }
-
-  deleteCover(id: number): Observable<void> {
-    const headers = this.ensureTokenAuthorization();
-
-    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers });
-  }
-  
-  private ensureTokenAuthorization() {
-    const token = localStorage.getItem('jwt');
-
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+    return this.http.put<void>(`${this.apiUrl}/${id}`, cover, {
+      headers: this.getAuthHeaders(),
     });
-    return headers;
   }
 }

@@ -36,7 +36,7 @@ export class EditAuthorComponent implements OnInit {
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.authorService.getAuthorById(id).subscribe({
+    this.authorService.getById(id).subscribe({
       next: (data) => {
         this.author = data;
         this.editAuthorForm.patchValue(data);
@@ -66,7 +66,7 @@ export class EditAuthorComponent implements OnInit {
   onDelete() {
     if (!this.author) return;
 
-    this.authorService.deleteAuthor(this.author.id).subscribe({
+    this.authorService.delete(this.author.id).subscribe({
       next: () => {
         alert('Author deleted successfully!');
         this.router.navigate(['/authors']);

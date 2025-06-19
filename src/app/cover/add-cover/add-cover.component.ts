@@ -41,10 +41,10 @@ export class AddCoverComponent {
   });
 
   ngOnInit() {
-    this.bookService.getBooks().subscribe((books) => {
+    this.bookService.getAll().subscribe((books) => {
       this.books = books;
     });
-    this.artistService.getArtists().subscribe((artists) => {
+    this.artistService.getAll().subscribe((artists) => {
       this.artists = artists;
     });
   }

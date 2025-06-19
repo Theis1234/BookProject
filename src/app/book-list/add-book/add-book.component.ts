@@ -39,7 +39,7 @@ export class AddBookComponent {
   });
 
   ngOnInit() {
-    this.authorService.getAuthors().subscribe((authors) => {
+    this.authorService.getAll().subscribe((authors) => {
       this.authors = authors;
     });
   }

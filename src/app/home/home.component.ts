@@ -13,7 +13,6 @@ export class HomeComponent {
   userRole: string | null = null;
   username: string | null = null;
 
-  private router = inject(Router);
   private authService = inject(AuthService);
 
   ngOnInit() {

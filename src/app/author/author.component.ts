@@ -11,31 +11,43 @@ import { AuthorSearchComponent } from '../search/author-search/author-search.com
   selector: 'app-author',
   imports: [CommonModule, FormsModule, RouterLink, AuthorSearchComponent],
   templateUrl: './author.component.html',
-  styleUrl: './author.component.css'
+  styleUrl: './author.component.css',
 })
 export class AuthorComponent implements OnInit {
-    isAdminUser: boolean = false;
-    
-    authors: Author[] = [];
-    filteredAuthors: Author[] = [];
-    private authorService = inject(AuthorService);
-    private authService = inject(AuthService);
-  
-    ngOnInit(): void {
-      this.authorService.getAuthors().subscribe({
-        next: authors => {
-        this.authors = authors,
-        this.filteredAuthors = authors
-      },
-        error: (err) => console.error('Error loading authors', err)
-      });
+  isAdminUser: boolean = false;
 
-      this.authService.role$.subscribe(role => { this.isAdminUser = role === 'Admin' });
-    }
-    onSearch(searchData: { firstName?: string, lastName?: string, nationality?: string }): void {
-  this.authorService.searchAuthors(searchData.firstName, searchData.lastName, searchData.nationality).subscribe({
-    next: authors => this.filteredAuthors = authors,
-    error: () => alert('Failed to search books')
-  });
-}
+  authors: Author[] = [];
+  filteredAuthors: Author[] = [];
+  private authorService = inject(AuthorService);
+  private authService = inject(AuthService);
+
+  ngOnInit(): void {
+    this.authorService.getAll().subscribe({
+      next: (authors) => {
+        this.authors = authors;
+        this.filteredAuthors = authors;
+      },
+      error: (err) => console.error('Error loading authors', err),
+    });
+
+    this.authService.role$.subscribe((role) => {
+      this.isAdminUser = role === 'Admin';
+    });
+  }
+  onSearch(searchData: {
+    firstName?: string;
+    lastName?: string;
+    nationality?: string;
+  }): void {
+    this.authorService
+      .searchAuthors(
+        searchData.firstName,
+        searchData.lastName,
+        searchData.nationality
+      )
+      .subscribe({
+        next: (authors) => (this.filteredAuthors = authors),
+        error: () => alert('Failed to search books'),
+      });
+  }
 }

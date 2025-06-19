@@ -23,7 +23,7 @@ export class ArtistComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.artistService.getArtists().subscribe({
+    this.artistService.getAll().subscribe({
       next: artists => {
         this.artists = artists,
         this.filteredArtists = artists
