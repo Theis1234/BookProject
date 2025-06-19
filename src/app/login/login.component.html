@@ -1,25 +1,73 @@
 <div class="login-container">
-  <form (ngSubmit)="login()" class="login-form">
+  <form (ngSubmit)="login()" [formGroup]="loginForm" class="login-form">
     <h2>Sign In</h2>
-    
-    <input 
-      type="text" 
-      [(ngModel)]="username" 
-      name="username" 
-      placeholder="Username" 
-      required 
+
+    <input
+      type="text"
+      formControlName="username"
+      name="username"
+      placeholder="Username"
+      required
     />
-    
-    <input 
-      type="password" 
-      [(ngModel)]="password" 
-      name="password" 
-      placeholder="Password" 
-      required 
+    <div
+      *ngIf="
+    loginForm.get('username')?.touched &&
+    loginForm.get('username')?.errors?.['required']
+  "
+      class="error"
+    >
+      Username is required.
+    </div>
+    <div
+      *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.errors?.['maxlength']"
+      class="error"
+    >
+      Username cannot exceed
+      {{ loginForm.get('username')?.errors?.['maxlength']?.requiredLength }}
+      characters. You entered
+      {{ loginForm.get('username')?.errors?.['maxlength']?.actualLength }}
+      characters.
+    </div>
+    <div
+      *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.errors?.['minlength']"
+      class="error"
+    >
+      Username must be longer than
+      {{ loginForm.get('username')?.errors?.['minlength']?.requiredLength }}
+      characters. You entered
+      {{ loginForm.get('username')?.errors?.['minlength']?.actualLength }}
+      characters.
+    </div>
+    <input
+      type="password"
+      formControlName="password"
+      name="password"
+      placeholder="Password"
+      required
     />
-    
+    <div
+      *ngIf="
+    loginForm.get('password')?.touched &&
+    loginForm.get('password')?.errors?.['required']
+  "
+      class="error"
+    >
+      Password is required.
+    </div>
+    <div
+      *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['minlength']"
+      class="error"
+    >
+      Password must be longer than
+      {{ loginForm.get('password')?.errors?.['minlength']?.requiredLength }}
+      characters. You entered
+      {{ loginForm.get('password')?.errors?.['minlength']?.actualLength }}
+      characters.
+    </div>
     <button type="submit">Login</button>
-    <a href="">Don't have an account? Sign Up Here</a>
+    <a [routerLink]="['/register']" routerLinkActive="active"
+      >Don't have an account? Sign up here</a
+    >
     <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
   </form>
 </div>

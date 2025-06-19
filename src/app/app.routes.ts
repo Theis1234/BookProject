@@ -40,6 +40,12 @@ export const routes: Routes = [
         },
     },
     {
+        path: 'register',
+        loadComponent: () => {
+            return import('./register/register.component').then((m) => m.RegisterComponent)
+        },
+    },
+    {
         path: 'artists/edit/:id',
         canActivate: [adminGuard],
         loadComponent: () => {

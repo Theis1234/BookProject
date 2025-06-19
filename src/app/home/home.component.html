@@ -1,1 +1,4 @@
-<h1>Welcome to Book Project Website</h1>
+<h1>Welcome to Book Project Website {{username}}</h1>
+@if(userRole == 'Admin'){
+    <h1>({{userRole}})</h1>
+}

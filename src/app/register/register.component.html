@@ -1,0 +1,103 @@
+<div class="register-container">
+  <form
+    (ngSubmit)="register()"
+    [formGroup]="registerUserForm"
+    class="register-form"
+  >
+    <h2>Create an Account</h2>
+
+    <input
+      type="text"
+      formControlName="username"
+      name="username"
+      placeholder="Username"
+      required
+    />
+    <div
+      *ngIf="
+    registerUserForm.get('username')?.touched &&
+    registerUserForm.get('username')?.errors?.['required']
+  "
+      class="error"
+    >
+      Username is required.
+    </div>
+    @if (registerUserForm.get('username')?.touched &&
+    registerUserForm.get('username')?.errors?.['maxlength']){
+    <div class="error">
+      Username cannot exceed
+      {{ registerUserForm.get('username')?.errors?.['maxlength']?.requiredLength }}
+      characters. You entered
+      {{ registerUserForm.get('username')?.errors?.['maxlength']?.actualLength }}
+      characters.
+    </div>
+    } @if (registerUserForm.get('username')?.touched &&
+    registerUserForm.get('username')?.errors?.['minlength']){
+    <div class="error">
+      Username must be longer than
+      {{ registerUserForm.get('username')?.errors?.['minlength']?.requiredLength }}
+      characters. You entered
+      {{ registerUserForm.get('username')?.errors?.['minlength']?.actualLength }}
+      characters.
+    </div>
+    }
+
+    <input
+      type="password"
+      formControlName="password"
+      name="password"
+      placeholder="Password"
+      required
+    />
+    <div
+      *ngIf="
+    registerUserForm.get('password')?.touched &&
+    registerUserForm.get('password')?.errors?.['required']
+  "
+      class="error"
+    >
+      Password is required.
+    </div>
+    <div
+      *ngIf="registerUserForm.get('password')?.touched && registerUserForm.get('password')?.errors?.['minlength']"
+      class="error"
+    >
+      Password must be longer than
+      {{ registerUserForm.get('password')?.errors?.['minlength']?.requiredLength }}
+      characters. You entered
+      {{ registerUserForm.get('password')?.errors?.['minlength']?.actualLength }}
+      characters.
+    </div>
+    <input
+      type="password"
+      formControlName="confirmPassword"
+      name="confirmPassword"
+      placeholder="Confirm Password"
+      required
+    />
+    <div
+      *ngIf="
+    registerUserForm.get('confirmPassword')?.touched &&
+    registerUserForm.get('confirmPassword')?.errors?.['required']
+  "
+      class="error"
+    >
+      You must confirm password
+    </div>
+    <div
+      *ngIf="registerUserForm.get('confirmPassword')?.touched && registerUserForm.get('confirmPassword')?.errors?.['minlength']"
+      class="error"
+    >
+      Password must be longer than
+      {{ registerUserForm.get('confirmPassword')?.errors?.['minlength']?.requiredLength }}
+      characters. You entered
+      {{ registerUserForm.get('confirmPassword')?.errors?.['minlength']?.actualLength }}
+      characters.
+    </div>
+
+    <button type="submit" [disabled]="registerUserForm.invalid">
+      Register
+    </button>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  </form>
+</div>
