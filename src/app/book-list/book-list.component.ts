@@ -6,6 +6,7 @@ import { AuthService } from '../services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { BookSearchComponent } from '../search/book-search/book-search.component';
+import { GenreService } from '../services/genre.service';
 
 @Component({
   selector: 'app-book-list',

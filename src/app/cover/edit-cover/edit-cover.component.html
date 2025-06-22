@@ -43,7 +43,7 @@
     <div class="form-group">
   <label>Artists:</label>
   <div *ngFor="let artist of artists">
-    <input type="checkbox" [value]="artist.id" name="artistIds" [checked]="artistIds.includes(artist.id)" (change)="onArtistToggle($event)"/>
+    <input type="checkbox" [value]="artist.id" name="artistIds" [checked]="form.get('artistIds')?.value?.includes(artist.id)" (change)="onArtistToggle($event)"/>
     {{ artist.firstName }} {{ artist.lastName }}
   </div>
   <div *ngIf="form.get('artistIds')?.touched && form.get('artistIds')?.invalid" class="error">

@@ -33,17 +33,15 @@
 
     <div class="form-group">
       <label for="genre">Genre:</label>
-      <input type="text" formControlName="genre" name="genre" id="genre"/>
-      <div
-          *ngIf="addBookForm.get('genre')?.touched && addBookForm.get('genre')?.errors?.['maxlength']"
-          class="error"
-        >
-          Genre cannot exceed
-          {{ addBookForm.get('genre')?.errors?.['maxlength']?.requiredLength }}
-          characters. You entered
-          {{ addBookForm.get('genre')?.errors?.['maxlength']?.actualLength }}
-          characters.
-        </div>
+      <select
+        formControlName="genreId"
+        id="genre"
+        class="form-control"
+      >
+        <option *ngFor="let genre of genres" [value]="genre.id">
+          {{ genre.name }}
+        </option>
+      </select>
     </div>
 
     <div class="form-group">

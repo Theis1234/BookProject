@@ -46,6 +46,12 @@ export const routes: Routes = [
         },
     },
     {
+        path: 'profile',
+        loadComponent: () => {
+            return import('./profile/profile.component').then((m) => m.ProfileComponent)
+        },
+    },
+    {
         path: 'artists/edit/:id',
         canActivate: [adminGuard],
         loadComponent: () => {

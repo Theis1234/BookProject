@@ -13,6 +13,8 @@ import {
 import { Author } from '../../models/author.model';
 import { AuthorService } from '../../services/author.service';
 import { BookDTO } from '../../models/book-dto';
+import { Genre } from '../../models/genre';
+import { GenreService } from '../../services/genre.service';
 
 @Component({
   selector: 'app-add-book',
@@ -21,17 +23,18 @@ import { BookDTO } from '../../models/book-dto';
   styleUrl: './add-book.component.css',
 })
 export class AddBookComponent {
-  submitted = false;
+  genres: Genre[] = [];
 
   authors: Author[] = [];
   private bookService = inject(BookService);
+  private authorService = inject(AuthorService);
+  private genreService = inject(GenreService);
   private fb = inject(FormBuilder);
   private router = inject(Router);
-  private authorService = inject(AuthorService);
 
   addBookForm: FormGroup = this.fb.group({
     title: ['', [Validators.maxLength(50)]],
-    genre: ['', [Validators.maxLength(30)]],
+    genreId: [null],
     publishedDate: ['', [Validators.required]],
     numberOfPages: [0, [Validators.required, Validators.min(1), Validators.max(100000)]],
     basePrice: [0, [Validators.required, Validators.min(0), Validators.max(100000)]],
@@ -42,6 +45,15 @@ export class AddBookComponent {
     this.authorService.getAll().subscribe((authors) => {
       this.authors = authors;
     });
+    this.authorService.getAll().subscribe({
+      next: (authors) => {
+        this.authors = authors;
+      },
+      error: () => alert('Error loading authors'),
+    });
+    this.genreService.getAll().subscribe((data) => {
+      this.genres = data;
+    });
   }
 
   onSubmit() {
@@ -49,8 +61,6 @@ export class AddBookComponent {
       this.addBookForm.markAllAsTouched();
       return;
     }
-
-    this.submitted = true;
 
     const createdBook: BookDTO = this.addBookForm.value;
 

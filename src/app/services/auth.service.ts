@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, tap, BehaviorSubject } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
+import { UserProfileDTO } from '../models/user-profile-dto';
 
 export interface JwtPayload {
   [key: string]: any;
@@ -29,7 +30,18 @@ export class AuthService {
       password,
     });
   }
-
+  getCurrentUserProfile() {
+    const token = this.getToken();
+    return this.http.get<UserProfileDTO>(`${this.apiUrl}/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  }
+  updateUserProfile(profile: UserProfileDTO) {
+    const token = this.getToken();
+    return this.http.put<UserProfileDTO>(`${this.apiUrl}/me`, profile, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  }
   login(username: string, password: string) {
     return this.http
       .post<any>(`${this.apiUrl}/login`, { username, password })

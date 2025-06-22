@@ -29,7 +29,6 @@ export class AddAuthorComponent implements OnInit {
       this.nationalities = data;
     });
     this.publisherService.getAll().subscribe((data) => {
-      console.log('PUBLISHERS:', data);
       this.publishers = data;
     });
     this.educationService.getAll().subscribe((data) => {

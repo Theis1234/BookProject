@@ -31,20 +31,27 @@
       </div>
     </div>
 
-    <div class="form-group">
+     <div class="form-group">
       <label for="genre">Genre:</label>
-      <input type="text" formControlName="genre" name="genre" id="genre" required />
-      <div
-          *ngIf="form.get('genre')?.touched && form.get('genre')?.errors?.['maxlength']"
-          class="error"
-        >
-          Genre cannot exceed
-          {{ form.get('genre')?.errors?.['maxlength']?.requiredLength }}
-          characters. You entered
-          {{ form.get('genre')?.errors?.['maxlength']?.actualLength }}
-          characters.
-        </div>
+      <select
+        formControlName="genreId"
+        id="genre"
+        class="form-control"
+      >
+        <option *ngFor="let genre of genres" [value]="genre.id">
+          {{ genre.name }}
+        </option>
+      </select>
     </div>
+    <div class="form-group" *ngIf="form.get('editions')?.value?.length > 0">
+  <label for="editions">Editions:</label>
+  <ul>
+    <li *ngFor="let edition of form.get('editions')?.value">
+      <strong>Format:</strong> {{ edition.format }}<br />
+      <strong>Release Date:</strong> {{ edition.releaseDate | date:'yyyy-MM-dd' }}
+    </li>
+  </ul>
+</div>
 
     <div class="form-group">
       <label for="published-date">Published Date:</label>
@@ -55,6 +62,7 @@
         </div>
       </div> 
     </div>
+
 
     <div class="form-group">
       <label for="number-of-pages">Number of Pages:</label>
