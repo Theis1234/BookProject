@@ -12,7 +12,7 @@ import {
 } from '@angular/forms';
 import { Author } from '../../models/author.model';
 import { AuthorService } from '../../services/author.service';
-import { CreateBookDTO } from '../../models/create-book-dto';
+import { BookDTO } from '../../models/book-dto';
 
 @Component({
   selector: 'app-add-book',
@@ -52,9 +52,9 @@ export class AddBookComponent {
 
     this.submitted = true;
 
-    const createdBook: CreateBookDTO = this.addBookForm.value;
+    const createdBook: BookDTO = this.addBookForm.value;
 
-    this.bookService.createBook(createdBook).subscribe({
+    this.bookService.create(createdBook).subscribe({
       next: () => {
         alert('Book added successfully!');
         this.router.navigate(['/books']);

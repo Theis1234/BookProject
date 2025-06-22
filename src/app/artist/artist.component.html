@@ -14,7 +14,8 @@
     @for(artist of filteredArtists; track artist){
     <div class="artist-card">
       <h3 class="artist-name-title">{{ artist.firstName }} {{ artist.lastName }}</h3>
-      <h3 class="artist-nationality">Nationality: {{ artist.nationality }} </h3>
+      <h3 class="artist-nationality">Nationality: {{ artist.nationality?.countryName }} </h3>
+      <h3 class="artist-website">Website: {{ artist.socialLinks?.website }} </h3>
       <p class="artist-birthday"><strong>Birthday: </strong> {{ artist.dateOfBirth }} </p>
       <img src="/assets/v3_0744730.jpg" alt="Picture of {{ artist.lastName }}" class="artist-image">
       <button class="edit-artist-button" *ngIf="isAdminUser" [routerLink]="['/artists/edit', artist.id]">Edit Artist</button>

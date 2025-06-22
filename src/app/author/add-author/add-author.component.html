@@ -62,25 +62,33 @@
         </div>
       </div>
     </div>
-
     <div class="form-group">
       <label for="nationality">Nationality:</label>
-      <input
-        type="text"
-        formControlName="nationality"
-        name="nationality"
+      <select
+        formControlName="nationalityId"
         id="nationality"
-      />
-      <div
-        *ngIf="addAuthorForm.get('nationality')?.touched && addAuthorForm.get('nationality')?.errors?.['maxlength']"
-        class="error"
+        class="form-control"
       >
-        Last name cannot exceed
-        {{ addAuthorForm.get('nationality')?.errors?.['maxlength']?.requiredLength }}
-        characters. You entered
-        {{ addAuthorForm.get('nationality')?.errors?.['maxlength']?.actualLength }}
-        characters.
-      </div>
+        <option *ngFor="let nat of nationalities" [value]="nat.id">
+          {{ nat.countryName }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="education">Education:</label>
+      <select formControlName="educationId" id="education" class="form-control">
+        <option *ngFor="let edu of educations" [value]="edu.id">
+          {{ edu.degree }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="publisher">Publisher:</label>
+      <select formControlName="publisherId" id="publisher" class="form-control">
+        <option *ngFor="let pub of publishers" [value]="pub.id">
+          {{ pub.name }}
+        </option>
+      </select>
     </div>
 
     <div class="form-group">
@@ -137,6 +145,52 @@
         characters. You entered
         {{ addAuthorForm.get('lastPublishedBook')?.errors?.['maxlength']?.actualLength }}
         characters.
+      </div>
+    </div>
+    <div formGroupName="address">
+      <div class="form-group">
+        <label for="country">Country:</label>
+        <input type="text" formControlName="country" id="country" />
+      </div>
+      <div class="form-group">
+        <label for="state">State:</label>
+        <input type="text" formControlName="state" id="state" />
+      </div>
+      <div class="form-group">
+        <label for="city">City:</label>
+        <input type="text" formControlName="city" id="city" />
+      </div>
+      <div class="form-group">
+        <label for="postalCode">Postal Code:</label>
+        <input type="text" formControlName="postalCode" id="postalCode" />
+      </div>
+      <div class="form-group">
+        <label for="street">Street:</label>
+        <input type="text" formControlName="street" id="street" />
+      </div>
+    </div>
+    <div formGroupName="contactInfo">
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="text" formControlName="email" id="email" />
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone:</label>
+        <input type="text" formControlName="phone" id="phone" />
+      </div>
+      <div class="form-group">
+        <label for="website">Website:</label>
+        <input type="text" formControlName="website" id="website" />
+      </div>
+    </div>
+    <div formGroupName="biography">
+      <div class="form-group">
+        <label for="shortBio">Short Biography:</label>
+        <input type="text" formControlName="shortBio" id="shortBio" />
+      </div>
+      <div class="form-group">
+        <label for="fullBio">Full Biography:</label>
+        <input type="text" formControlName="fullBio" id="fullBio" />
       </div>
     </div>
 

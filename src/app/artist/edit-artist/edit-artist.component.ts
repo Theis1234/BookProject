@@ -10,6 +10,13 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { ArtistService } from '../../services/artist.service';
 import { Artist } from '../../models/artist.model';
+import { ArtistDTO } from '../../models/artist-dto';
+import { AbstractEditComponent } from '../../shared/abstract-edit';
+import { Observable } from 'rxjs';
+import { Nationality } from '../../models/nationality';
+import { NationalityService } from '../../services/nationality.service';
+import { Education } from '../../models/education';
+import { Publisher } from '../../models/publisher';
 
 @Component({
   selector: 'app-edit-artist',
@@ -17,61 +24,64 @@ import { Artist } from '../../models/artist.model';
   templateUrl: './edit-artist.component.html',
   styleUrl: './edit-artist.component.css',
 })
-export class EditArtistComponent implements OnInit {
-  submitted = false;
-  artist: Artist | null = null;
+export class EditArtistComponent extends AbstractEditComponent<
+  Artist,
+  ArtistDTO
+> {
+  protected override entityName = 'Artist';
+  nationalities: Nationality[] = [];
+  educations: Education[] = [];
+  publishers: Publisher[] = []
 
-  private fb = inject(FormBuilder);
+  protected override getService(): {
+    delete(id: number): Observable<any>;
+    update(id: number, dto: any): Observable<any>;
+    getById(id: number): Observable<any>;
+  } {
+    return this.artistService;
+  }
+  protected override buildForm(): FormGroup {
+    return this.fb.group({
+      firstName: ['', [Validators.required, Validators.maxLength(50)]],
+      lastName: ['', [Validators.required, Validators.maxLength(50)]],
+      nationalityId: [null, Validators.required],
+      dateOfBirth: ['', [Validators.required]],
+      artistCovers: this.fb.array([]),
+
+      address: this.fb.group({
+        street: [''],
+        city: [''],
+        state: [''],
+        postalCode: [''],
+        country: [''],
+      }),
+      contactInfo: this.fb.group({
+        email: [''],
+        phone: [''],
+        website: [''],
+      }),
+
+      socialLinks: this.fb.group({
+        instagram: [''],
+        twitter: [''],
+        website: [''],
+      }),
+    });
+  }
+  protected override patchForm(data: Artist): void {
+    this.item = data;
+
+    data.address ??= {} as any;
+    data.contactInfo ??= {} as any;
+    data.socialLinks ??= {} as any;
+
+    this.form.patchValue(data as { [key: string]: any });
+  }
+  protected override onInitExtras(): void {
+    this.nationalityService.getAll().subscribe((data) => {
+      this.nationalities = data;
+    });
+  }
   private artistService = inject(ArtistService);
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
-
-  editArtistForm: FormGroup = this.fb.group({
-    firstName: ['', [Validators.required, Validators.maxLength(50)]],
-    lastName: ['', [Validators.required, Validators.maxLength(50)]],
-    nationality: ['', [Validators.maxLength(30)]],
-    dateOfBirth: ['', [Validators.required]],
-    artistCovers: this.fb.array([]),
-  });
-
-  ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.artistService.getById(id).subscribe({
-      next: (data) => {
-        this.artist = data;
-        this.editArtistForm.patchValue(data);
-      },
-      error: () => alert('Error loading artist'),
-    });
-  }
-  onSubmit() {
-    if (this.editArtistForm.invalid) {
-      this.editArtistForm.markAllAsTouched();
-      return;
-    }
-
-    const updatedArtist: Artist = {
-      ...this.editArtistForm.value,
-      id: Number(this.route.snapshot.paramMap.get('id')),
-    };
-
-    this.artistService.updateArtist(updatedArtist.id, updatedArtist).subscribe({
-      next: () => {
-        alert('Artist updated successfully!');
-        this.router.navigate(['/artists']);
-      },
-      error: () => alert('Failed to update artist.'),
-    });
-  }
-  onDelete() {
-    if (!this.artist) return;
-
-    this.artistService.delete(this.artist.id).subscribe({
-      next: () => {
-        alert('Artist deleted successfully!');
-        this.router.navigate(['/artists']);
-      },
-      error: () => alert('Failed to delete artist.'),
-    });
-  }
+  private nationalityService = inject(NationalityService);
 }

@@ -64,7 +64,7 @@ export class AddCoverComponent {
       return;
     }
 
-    this.coverService.createCover(createdCover).subscribe({
+    this.coverService.create(createdCover).subscribe({
       next: () => {
         alert('Cover added successfully!');
         this.router.navigate(['/covers']);

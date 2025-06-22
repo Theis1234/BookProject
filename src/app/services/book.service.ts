@@ -2,21 +2,16 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Book } from '../models/book.model';
-import { CreateBookDTO } from '../models/create-book-dto';
+import { BookDTO } from '../models/book-dto';
 import { BaseService } from './base.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class BookService extends BaseService<Book> {
+export class BookService extends BaseService<Book, BookDTO> {
   protected apiUrl = 'http://localhost:5107/api/books';
 
-  createBook(book: CreateBookDTO): Observable<Book> {
-    return this.http.post<Book>(`${this.apiUrl}`, book, {
-      headers: this.getAuthHeaders(),
-    });
-  }
-  updateBook(id: number, book: Book): Observable<void> {
+  updateBook(id: number, book: BookDTO): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/${id}`, book, {
       headers: this.getAuthHeaders(),
     });

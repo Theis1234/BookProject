@@ -16,6 +16,8 @@ import { CoverService } from '../../services/cover.service';
 import { ArtistService } from '../../services/artist.service';
 import { Artist } from '../../models/artist.model';
 import { CoverDTO } from '../../models/cover-dto';
+import { AbstractEditComponent } from '../../shared/abstract-edit';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-edit-cover',
@@ -23,99 +25,54 @@ import { CoverDTO } from '../../models/cover-dto';
   templateUrl: './edit-cover.component.html',
   styleUrl: './edit-cover.component.css',
 })
-export class EditCoverComponent {
-  submitted = false;
-  books: Book[] = [];
-  artists: Artist[] = [];
-  artistIds: number[] = [];
-  cover: Cover | null = null;
-
-  private bookService = inject(BookService);
-  private fb = inject(FormBuilder);
-  private router = inject(Router);
-  private coverService = inject(CoverService);
-  private artistService = inject(ArtistService);
-  private route = inject(ActivatedRoute);
-
-  editCoverForm: FormGroup = this.fb.group({
+export class EditCoverComponent extends AbstractEditComponent<Cover,CoverDTO> {
+  protected override entityName = 'Cover';
+  protected override getService(): { delete(id: number): Observable<any>; update(id: number, dto: any): Observable<any>; getById(id: number): Observable<any>; } {
+    return this.coverService
+  }
+  protected override buildForm(): FormGroup {
+    return this.fb.group({
     title: ['', [Validators.required, Validators.maxLength(50)]],
     digitalOnly: [false],
     bookId: [null, [Validators.required]],
     artistIds: this.fb.array([], [Validators.required]),
   });
+  }
+  protected override patchForm(data: Cover): void {
+    this.item = data;
+    this.form.patchValue(data);
 
-  ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
+    const artistIdsFormArray = this.form.get('artistIds') as FormArray;
+    artistIdsFormArray.clear();
 
-    this.coverService.getById(id).subscribe({
-      next: (data) => {
-        this.cover = data;
-        this.editCoverForm.patchValue(data);
-
-        this.bookService.getAll().subscribe((books) => {
-          this.books = books;
-        });
-
-        this.artistService.getAll().subscribe((artists) => {
-          this.artists = artists;
-          const artistFormArray = this.editCoverForm.get(
-            'artistIds'
-          ) as FormArray;
-          const selectedArtistIds =
-            data.artistCovers?.map((ac) => ac.artistId) ?? [];
-
-          selectedArtistIds.forEach((id) => {
-            artistFormArray.push(this.fb.control(id));
-          });
-
-          this.artistIds = selectedArtistIds;
-        });
-      },
-      error: () => alert('Error loading cover'),
+    const selectedArtistIds = data.artistCovers?.map((ac) => ac.artistId) ?? [];
+    selectedArtistIds.forEach((id) => {
+      artistIdsFormArray.push(this.fb.control(id));
     });
   }
+  protected override onInitExtras(): void {
+     this.bookService.getAll().subscribe({
+      next: (books) => (this.books = books),
+      error: () => alert('Error loading books'),
+    });
 
-  onSubmit() {
-    if (this.editCoverForm.invalid) {
-      this.editCoverForm.markAllAsTouched();
-      return;
-    }
-
-    this.submitted = true;
-
-    const updatedCover: CoverDTO = this.editCoverForm.value;
-
-    const artistIds = this.editCoverForm.get('artistIds') as FormArray;
-    if (this.artists.length === 0) {
-      alert('Please select at least one artist.');
-      return;
-    }
-
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-
-    this.coverService.updateCover(id, updatedCover).subscribe({
-      next: () => {
-        alert('Cover updated successfully!');
-        this.router.navigate(['/covers']);
-      },
-      error: () => alert('Failed to update cover.'),
+    this.artistService.getAll().subscribe({
+      next: (artists) => (this.artists = artists),
+      error: () => alert('Error loading artists'),
     });
   }
-  onDelete() {
-    if (!this.cover) return;
+  books: Book[] = [];
+  artists: Artist[] = [];
+  artistIds: number[] = [];
 
-    this.coverService.delete(this.cover.id).subscribe({
-      next: () => {
-        alert('Cover deleted successfully!');
-        this.router.navigate(['/covers']);
-      },
-      error: () => alert('Failed to delete cover.'),
-    });
-  }
+  private bookService = inject(BookService);
+  private coverService = inject(CoverService);
+  private artistService = inject(ArtistService);
+  
   onArtistToggle(event: Event) {
     const checkbox = event.target as HTMLInputElement;
     const artistId = parseInt(checkbox.value, 10);
-    const artistIds = this.editCoverForm.get('artistIds') as FormArray;
+    const artistIds = this.form.get('artistIds') as FormArray;
 
     if (checkbox.checked) {
       artistIds.push(this.fb.control(artistId));

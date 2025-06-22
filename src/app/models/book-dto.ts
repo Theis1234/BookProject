@@ -1,4 +1,4 @@
-export interface CreateBookDTO {
+export interface BookDTO {
     title: string;
     genre: string;
     publishedDate: string;

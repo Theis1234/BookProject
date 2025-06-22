@@ -1,21 +1,21 @@
 <div class="cover-form-container">
   <h2>Edit Cover</h2>
-  <form (ngSubmit)="onSubmit()" [formGroup]="editCoverForm" class="cover-form">
+  <form (ngSubmit)="onSubmit()" [formGroup]="form" class="cover-form">
     <div class="form-group">
       <label for="title">Title:</label>
       <input type="text" formControlName="title" name="title" id="title" required />
-        <div *ngIf="editCoverForm.get('title')?.touched && editCoverForm.get('title')?.invalid" class="error">
-        <div *ngIf="editCoverForm.get('title')?.errors?.['required']">
+        <div *ngIf="form.get('title')?.touched && form.get('title')?.invalid" class="error">
+        <div *ngIf="form.get('title')?.errors?.['required']">
         A Title is required.
         </div>
         <div
-          *ngIf="editCoverForm.get('title')?.touched && editCoverForm.get('title')?.errors?.['maxlength']"
+          *ngIf="form.get('title')?.touched && form.get('title')?.errors?.['maxlength']"
           class="error"
         >
           Title cannot exceed
-          {{ editCoverForm.get('title')?.errors?.['maxlength']?.requiredLength }}
+          {{ form.get('title')?.errors?.['maxlength']?.requiredLength }}
           characters. You entered
-          {{ editCoverForm.get('title')?.errors?.['maxlength']?.actualLength }}
+          {{ form.get('title')?.errors?.['maxlength']?.actualLength }}
           characters.
         </div>
       </div> 
@@ -33,8 +33,8 @@
       {{ book.title }} (By {{ book.author.firstName }} {{ book.author.lastName}})
     </option>
   </select>
-   <div *ngIf="editCoverForm.get('bookId')?.touched && editCoverForm.get('bookId')?.invalid" class="error">
-        <div *ngIf="editCoverForm.get('bookId')?.errors?.['required']">
+   <div *ngIf="form.get('bookId')?.touched && form.get('bookId')?.invalid" class="error">
+        <div *ngIf="form.get('bookId')?.errors?.['required']">
         A book is required.
         </div>
       </div> 
@@ -46,8 +46,8 @@
     <input type="checkbox" [value]="artist.id" name="artistIds" [checked]="artistIds.includes(artist.id)" (change)="onArtistToggle($event)"/>
     {{ artist.firstName }} {{ artist.lastName }}
   </div>
-  <div *ngIf="editCoverForm.get('artistIds')?.touched && editCoverForm.get('artistIds')?.invalid" class="error">
-        <div *ngIf="editCoverForm.get('artistIds')?.errors?.['required']">
+  <div *ngIf="form.get('artistIds')?.touched && form.get('artistIds')?.invalid" class="error">
+        <div *ngIf="form.get('artistIds')?.errors?.['required']">
         An author is required.
         </div>
       </div> 

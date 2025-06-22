@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import {
@@ -8,8 +8,10 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CreateArtistDTO } from '../../models/create-artist-dto';
+import { ArtistDTO } from '../../models/artist-dto';
 import { ArtistService } from '../../services/artist.service';
+import { NationalityService } from '../../services/nationality.service';
+import { Nationality } from '../../models/nationality';
 
 @Component({
   selector: 'app-add-artist',
@@ -17,17 +19,42 @@ import { ArtistService } from '../../services/artist.service';
   templateUrl: './add-artist.component.html',
   styleUrl: './add-artist.component.css',
 })
-export class AddArtistComponent {
-  submitted = false;
+export class AddArtistComponent implements OnInit {
+  ngOnInit(): void {
+    this.nationalityService.getAll().subscribe({
+      next: (data) => (this.nationalities = data),
+      error: () => alert('Failed to load nationalities.'),
+    });
+  }
+  nationalities: Nationality[] = [];
   private fb = inject(FormBuilder);
   private artistService = inject(ArtistService);
+  private nationalityService = inject(NationalityService);
   private router = inject(Router);
 
   addArtistForm: FormGroup = this.fb.group({
     firstName: ['', [Validators.required, Validators.maxLength(50)]],
     lastName: ['', [Validators.required, Validators.maxLength(50)]],
-    nationality: ['', [Validators.maxLength(30)]],
+    nationalityId: [null, Validators.required],
     dateOfBirth: ['', [Validators.required]],
+    address: this.fb.group({
+      street: [''],
+      city: [''],
+      state: [''],
+      postalCode: [''],
+      country: [''],
+    }),
+    contactInfo: this.fb.group({
+      email: [''],
+      phone: [''],
+      website: [''],
+    }),
+
+    socialLinks: this.fb.group({
+      instagram: [''],
+      twitter: [''],
+      website: [''],
+    }),
   });
 
   onSubmit() {
@@ -36,11 +63,9 @@ export class AddArtistComponent {
       return;
     }
 
-    this.submitted = true;
+    const artist: ArtistDTO = this.addArtistForm.value;
 
-    const artist: CreateArtistDTO = this.addArtistForm.value;
-
-    this.artistService.createArtist(artist).subscribe({
+    this.artistService.create(artist).subscribe({
       next: () => {
         alert('Artist added successfully!');
         this.router.navigate(['/artists']);

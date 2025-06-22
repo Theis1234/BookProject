@@ -1,21 +1,21 @@
 <div class="author-form-container">
   <h2>Edit Author</h2>
-  <form (ngSubmit)="onSubmit()" [formGroup]="editAuthorForm" class="author-form">
+  <form (ngSubmit)="onSubmit()" [formGroup]="form" class="author-form">
     <div class="form-group">
       <label for="firstName">First Name:</label>
       <input type="text" formControlName="firstName" name="firstName" id="firstName" required />
-      <div *ngIf="editAuthorForm.get('firstName')?.touched && editAuthorForm.get('firstName')?.invalid" class="error">
-        <div *ngIf="editAuthorForm.get('firstName')?.errors?.['required']">
+      <div *ngIf="form.get('firstName')?.touched && form.get('firstName')?.invalid" class="error">
+        <div *ngIf="form.get('firstName')?.errors?.['required']">
         First Name is required.
         </div>
          <div
-          *ngIf="editAuthorForm.get('firstName')?.touched && editAuthorForm.get('firstName')?.errors?.['maxlength']"
+          *ngIf="form.get('firstName')?.touched && form.get('firstName')?.errors?.['maxlength']"
           class="error"
         >
           First name cannot exceed
-          {{ editAuthorForm.get('firstName')?.errors?.['maxlength']?.requiredLength }}
+          {{ form.get('firstName')?.errors?.['maxlength']?.requiredLength }}
           characters. You entered
-          {{ editAuthorForm.get('firstName')?.errors?.['maxlength']?.actualLength }}
+          {{ form.get('firstName')?.errors?.['maxlength']?.actualLength }}
           characters.
         </div>
       </div>
@@ -24,18 +24,18 @@
     <div class="form-group">
       <label for="lastName">Last Name:</label>
       <input type="text" formControlName="lastName" name="lastName" id="lastName" required />
-      <div *ngIf="editAuthorForm.get('lastName')?.touched && editAuthorForm.get('lastName')?.invalid" class="error">
-        <div *ngIf="editAuthorForm.get('lastName')?.errors?.['required']">
+      <div *ngIf="form.get('lastName')?.touched && form.get('lastName')?.invalid" class="error">
+        <div *ngIf="form.get('lastName')?.errors?.['required']">
         Last Name is required.
         </div>
         <div
-          *ngIf="editAuthorForm.get('lastName')?.touched && editAuthorForm.get('lastName')?.errors?.['maxlength']"
+          *ngIf="form.get('lastName')?.touched && form.get('lastName')?.errors?.['maxlength']"
           class="error"
         >
           Last name cannot exceed
-          {{ editAuthorForm.get('lastName')?.errors?.['maxlength']?.requiredLength }}
+          {{ form.get('lastName')?.errors?.['maxlength']?.requiredLength }}
           characters. You entered
-          {{ editAuthorForm.get('lastName')?.errors?.['maxlength']?.actualLength }}
+          {{ form.get('lastName')?.errors?.['maxlength']?.actualLength }}
           characters.
         </div>
       </div> 
@@ -43,29 +43,51 @@
 
     <div class="form-group">
       <label for="nationality">Nationality:</label>
-      <input type="text" formControlName="nationality" name="nationality" id="nationality" />
-      <div
-          *ngIf="editAuthorForm.get('nationality')?.touched && editAuthorForm.get('nationality')?.errors?.['maxlength']"
-          class="error"
-        >
-          Last name cannot exceed
-          {{ editAuthorForm.get('nationality')?.errors?.['maxlength']?.requiredLength }}
-          characters. You entered
-          {{ editAuthorForm.get('nationality')?.errors?.['maxlength']?.actualLength }}
-          characters.
-        </div>
+      <select
+        formControlName="nationalityId"
+        id="nationality"
+        class="form-control"
+      >
+        <option *ngFor="let nat of nationalities" [value]="nat.id">
+          {{ nat.countryName }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="education">Education:</label>
+      <select
+        formControlName="educationId"
+        id="education"
+        class="form-control"
+      >
+        <option *ngFor="let edu of educations" [value]="edu.id">
+          {{ edu.degree }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="publisher">Publisher:</label>
+      <select
+        formControlName="publisherId"
+        id="publisher"
+        class="form-control"
+      >
+        <option *ngFor="let pub of publishers" [value]="pub.id">
+          {{ pub.name }}
+        </option>
+      </select>
     </div>
     <div class="form-group">
       <label for="last-publish">Last Published Book:</label>
       <input type="text" formControlName="lastPublishedBook" name="last-publish" id="last-publish" />
       <div
-        *ngIf="editAuthorForm.get('lastPublishedBook')?.touched && editAuthorForm.get('lastPublishedBook')?.errors?.['maxlength']"
+        *ngIf="form.get('lastPublishedBook')?.touched && form.get('lastPublishedBook')?.errors?.['maxlength']"
         class="error"
       >
         Last name cannot exceed
-        {{ editAuthorForm.get('lastPublishedBook')?.errors?.['maxlength']?.requiredLength }}
+        {{ form.get('lastPublishedBook')?.errors?.['maxlength']?.requiredLength }}
         characters. You entered
-        {{ editAuthorForm.get('lastPublishedBook')?.errors?.['maxlength']?.actualLength }}
+        {{ form.get('lastPublishedBook')?.errors?.['maxlength']?.actualLength }}
         characters.
       </div>
     </div>
@@ -74,7 +96,7 @@
       <label for="number-of-books">Number of Books Published:</label>
       <input type="number" formControlName="numberOfBooksPublished" name="number-of-books" id="number-of-books" />
       <div
-        *ngIf="editAuthorForm.get('numberOfBooksPublished')?.errors?.['max']"
+        *ngIf="form.get('numberOfBooksPublished')?.errors?.['max']"
         class="error"
       >
         Number of pages must not exceed 100000.
@@ -84,11 +106,61 @@
     <div class="form-group">
       <label for="dateOfBirth">Date of Birth:</label>
       <input type="date" formControlName="dateOfBirth" name="dateOfBirth" id="dateOfBirth" required />
-      <div *ngIf="editAuthorForm.get('dateOfBirth')?.touched && editAuthorForm.get('dateOfBirth')?.invalid" class="error">
-        <div *ngIf="editAuthorForm.get('dateOfBirth')?.errors?.['required']">
+      <div *ngIf="form.get('dateOfBirth')?.touched && form.get('dateOfBirth')?.invalid" class="error">
+        <div *ngIf="form.get('dateOfBirth')?.errors?.['required']">
         Date of Birth is required.
         </div>
       </div> 
+    </div>
+    <div formGroupName="address">
+            <div class="form-group">
+        <label for="country">Country:</label>
+        <input type="text" formControlName="country" id="country" />
+      </div>
+      <div class="form-group">
+        <label for="state">State:</label>
+        <input type="text" formControlName="state" id="state" />
+      </div>
+      <div class="form-group">
+        <label for="city">City:</label>
+        <input type="text" formControlName="city" id="city" />
+      </div>
+            <div class="form-group">
+        <label for="postalCode">Postal Code:</label>
+        <input type="text" formControlName="postalCode" id="postalCode" />
+      </div>
+      <div class="form-group">
+        <label for="street">Street:</label>
+        <input type="text" formControlName="street" id="street" />
+      </div>
+
+    </div>
+    <div formGroupName="contactInfo">
+            <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="text" formControlName="email" id="email" />
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone:</label>
+        <input type="text" formControlName="phone" id="phone" />
+      </div>
+      <div class="form-group">
+        <label for="website">Website:</label>
+        <input type="text" formControlName="website" id="website" />
+      </div>
+
+    </div>
+    <div formGroupName="biography">
+            <div class="form-group">
+        <label for="shortBio">Short Biography:</label>
+        <input type="text" formControlName="shortBio" id="shortBio" />
+      </div>
+      <div class="form-group">
+        <label for="fullBio">Full Biography:</label>
+        <input type="text" formControlName="fullBio" id="fullBio" />
+      </div>
+
+
     </div>
 
     <div class="button-group">

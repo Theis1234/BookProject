@@ -1,21 +1,30 @@
 <div class="artist-form-container">
   <h2>Edit Artist</h2>
-  <form (ngSubmit)="onSubmit()" [formGroup]="editArtistForm" class="artist-form">
+  <form (ngSubmit)="onSubmit()" [formGroup]="form" class="artist-form">
     <div class="form-group">
       <label for="firstName">First Name:</label>
-      <input type="text" formControlName="firstName" name="firstName" id="firstName" required />
-      <div *ngIf="editArtistForm.get('firstName')?.touched && editArtistForm.get('firstName')?.invalid" class="error">
-        <div *ngIf="editArtistForm.get('firstName')?.errors?.['required']">
-        First Name is required.
+      <input
+        type="text"
+        formControlName="firstName"
+        name="firstName"
+        id="firstName"
+        required
+      />
+      <div
+        *ngIf="form.get('firstName')?.touched && form.get('firstName')?.invalid"
+        class="error"
+      >
+        <div *ngIf="form.get('firstName')?.errors?.['required']">
+          First Name is required.
         </div>
         <div
-          *ngIf="editArtistForm.get('firstName')?.touched && editArtistForm.get('firstName')?.errors?.['maxlength']"
+          *ngIf="form.get('firstName')?.touched && form.get('firstName')?.errors?.['maxlength']"
           class="error"
         >
           First name cannot exceed
-          {{ editArtistForm.get('firstName')?.errors?.['maxlength']?.requiredLength }}
+          {{ form.get('firstName')?.errors?.['maxlength']?.requiredLength }}
           characters. You entered
-          {{ editArtistForm.get('firstName')?.errors?.['maxlength']?.actualLength }}
+          {{ form.get('firstName')?.errors?.['maxlength']?.actualLength }}
           characters.
         </div>
       </div>
@@ -23,51 +32,125 @@
 
     <div class="form-group">
       <label for="lastName">Last Name:</label>
-      <input type="text" formControlName="lastName" name="lastName" id="lastName" required />
-      <div *ngIf="editArtistForm.get('lastName')?.touched && editArtistForm.get('lastName')?.invalid" class="error">
-        <div *ngIf="editArtistForm.get('lastName')?.errors?.['required']">
-        Last Name is required.
+      <input
+        type="text"
+        formControlName="lastName"
+        name="lastName"
+        id="lastName"
+        required
+      />
+      <div
+        *ngIf="form.get('lastName')?.touched && form.get('lastName')?.invalid"
+        class="error"
+      >
+        <div *ngIf="form.get('lastName')?.errors?.['required']">
+          Last Name is required.
         </div>
         <div
-          *ngIf="editArtistForm.get('lastName')?.touched && editArtistForm.get('lastName')?.errors?.['maxlength']"
+          *ngIf="form.get('lastName')?.touched && form.get('lastName')?.errors?.['maxlength']"
           class="error"
         >
           Last name cannot exceed
-          {{ editArtistForm.get('lastName')?.errors?.['maxlength']?.requiredLength }}
+          {{ form.get('lastName')?.errors?.['maxlength']?.requiredLength }}
           characters. You entered
-          {{ editArtistForm.get('lastName')?.errors?.['maxlength']?.actualLength }}
+          {{ form.get('lastName')?.errors?.['maxlength']?.actualLength }}
           characters.
         </div>
-      </div> 
+      </div>
     </div>
 
     <div class="form-group">
       <label for="nationality">Nationality:</label>
-      <input type="text" formControlName="nationality" name="nationality" id="nationality" />
-      <div
-          *ngIf="editArtistForm.get('nationality')?.touched && editArtistForm.get('nationality')?.errors?.['maxlength']"
-          class="error"
-        >
-          Last name cannot exceed
-          {{ editArtistForm.get('nationality')?.errors?.['maxlength']?.requiredLength }}
-          characters. You entered
-          {{ editArtistForm.get('nationality')?.errors?.['maxlength']?.actualLength }}
-          characters.
-        </div>
+      <select
+        formControlName="nationalityId"
+        id="nationality"
+        class="form-control"
+      >
+        <option *ngFor="let nat of nationalities" [value]="nat.id">
+          {{ nat.countryName }}
+        </option>
+      </select>
     </div>
+    
 
     <div class="form-group">
       <label for="dateOfBirth">Date of Birth:</label>
-      <input type="date" formControlName="dateOfBirth" name="dateOfBirth" id="dateOfBirth" required />
-      <div *ngIf="editArtistForm.get('dateOfBirth')?.touched && editArtistForm.get('dateOfBirth')?.invalid" class="error">
-        <div *ngIf="editArtistForm.get('dateOfBirth')?.errors?.['required']">
-        Date of Birth is required.
+      <input
+        type="date"
+        formControlName="dateOfBirth"
+        name="dateOfBirth"
+        id="dateOfBirth"
+        required
+      />
+      <div
+        *ngIf="
+          form.get('dateOfBirth')?.touched && form.get('dateOfBirth')?.invalid
+        "
+        class="error"
+      >
+        <div *ngIf="form.get('dateOfBirth')?.errors?.['required']">
+          Date of Birth is required.
         </div>
-      </div> 
+      </div>
+    </div>
+    <div formGroupName="address">
+            <div class="form-group">
+        <label for="country">Country:</label>
+        <input type="text" formControlName="country" id="country" />
+      </div>
+      <div class="form-group">
+        <label for="state">State:</label>
+        <input type="text" formControlName="state" id="state" />
+      </div>
+      <div class="form-group">
+        <label for="city">City:</label>
+        <input type="text" formControlName="city" id="city" />
+      </div>
+            <div class="form-group">
+        <label for="postalCode">Postal Code:</label>
+        <input type="text" formControlName="postalCode" id="postalCode" />
+      </div>
+      <div class="form-group">
+        <label for="street">Street:</label>
+        <input type="text" formControlName="street" id="street" />
+      </div>
+
+    </div>
+    <div formGroupName="contactInfo">
+            <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="text" formControlName="email" id="email" />
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone:</label>
+        <input type="text" formControlName="phone" id="phone" />
+      </div>
+      <div class="form-group">
+        <label for="website">Website:</label>
+        <input type="text" formControlName="website" id="website" />
+      </div>
+
+    </div>
+    <div formGroupName="socialLinks">
+            <div class="form-group">
+        <label for="instagram">Instagram:</label>
+        <input type="text" formControlName="instagram" id="instagram" />
+      </div>
+      <div class="form-group">
+        <label for="twitter">Twitter:</label>
+        <input type="text" formControlName="twitter" id="twitter" />
+      </div>
+      <div class="form-group">
+        <label for="website">Website:</label>
+        <input type="text" formControlName="website" id="website" />
+      </div>
+
     </div>
 
     <div class="button-group">
-      <button type="button" class="btn btn-danger" (click)="onDelete()">Delete Artist</button>
+      <button type="button" class="btn btn-danger" (click)="onDelete()">
+        Delete Artist
+      </button>
       <button type="submit" class="btn btn-primary">Save</button>
     </div>
   </form>

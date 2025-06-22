@@ -1,17 +1,17 @@
 <div class="book-form-container">
   <h2>Edit Book</h2>
-  <form (ngSubmit)="onSubmit()" [formGroup]="editBookForm" class="book-form">
+  <form (ngSubmit)="onSubmit()" [formGroup]="form" class="book-form">
     <div class="form-group">
       <label for="title">Title:</label>
       <input type="text" formControlName="title" name="title" id="title" required />
       <div
-          *ngIf="editBookForm.get('title')?.touched && editBookForm.get('title')?.errors?.['maxlength']"
+          *ngIf="form.get('title')?.touched && form.get('title')?.errors?.['maxlength']"
           class="error"
         >
           Title cannot exceed
-          {{ editBookForm.get('title')?.errors?.['maxlength']?.requiredLength }}
+          {{ form.get('title')?.errors?.['maxlength']?.requiredLength }}
           characters. You entered
-          {{ editBookForm.get('title')?.errors?.['maxlength']?.actualLength }}
+          {{ form.get('title')?.errors?.['maxlength']?.actualLength }}
           characters.
         </div>
     </div>
@@ -24,8 +24,8 @@
           {{ author.firstName }} {{ author.lastName }}
         </option>
       </select>
-      <div *ngIf="editBookForm.get('authorId')?.touched && editBookForm.get('authorId')?.invalid" class="error">
-        <div *ngIf="editBookForm.get('authorId')?.errors?.['required']">
+      <div *ngIf="form.get('authorId')?.touched && form.get('authorId')?.invalid" class="error">
+        <div *ngIf="form.get('authorId')?.errors?.['required']">
           An author is required.
         </div>
       </div>
@@ -35,13 +35,13 @@
       <label for="genre">Genre:</label>
       <input type="text" formControlName="genre" name="genre" id="genre" required />
       <div
-          *ngIf="editBookForm.get('genre')?.touched && editBookForm.get('genre')?.errors?.['maxlength']"
+          *ngIf="form.get('genre')?.touched && form.get('genre')?.errors?.['maxlength']"
           class="error"
         >
           Genre cannot exceed
-          {{ editBookForm.get('genre')?.errors?.['maxlength']?.requiredLength }}
+          {{ form.get('genre')?.errors?.['maxlength']?.requiredLength }}
           characters. You entered
-          {{ editBookForm.get('genre')?.errors?.['maxlength']?.actualLength }}
+          {{ form.get('genre')?.errors?.['maxlength']?.actualLength }}
           characters.
         </div>
     </div>
@@ -49,8 +49,8 @@
     <div class="form-group">
       <label for="published-date">Published Date:</label>
       <input type="date" formControlName="publishedDate" name="published-date" id="published-date" />
-      <div *ngIf="editBookForm.get('publishedDate')?.touched && editBookForm.get('publishedDate')?.invalid" class="error">
-        <div *ngIf="editBookForm.get('publishedDate')?.errors?.['required']">
+      <div *ngIf="form.get('publishedDate')?.touched && form.get('publishedDate')?.invalid" class="error">
+        <div *ngIf="form.get('publishedDate')?.errors?.['required']">
         Published Date is required.
         </div>
       </div> 
@@ -59,11 +59,11 @@
     <div class="form-group">
       <label for="number-of-pages">Number of Pages:</label>
       <input type="number" formControlName="numberOfPages" name="number-of-pages" id="number-of-pages" required />
-      <div *ngIf="editBookForm.get('numberOfPages')?.errors?.['min']" class="error">
+      <div *ngIf="form.get('numberOfPages')?.errors?.['min']" class="error">
       Number of pages must be greater than 1.
     </div>
     <div
-        *ngIf="editBookForm.get('numberOfPages')?.errors?.['max']"
+        *ngIf="form.get('numberOfPages')?.errors?.['max']"
         class="error"
       >
         Number of pages must not exceed 100000.
@@ -73,11 +73,11 @@
     <div class="form-group">
       <label for="base-price">Base Price:</label>
       <input type="number" formControlName="basePrice" name="base-price" id="base-price" required />
-      <div *ngIf="editBookForm.get('basePrice')?.errors?.['min']" class="error">
+      <div *ngIf="form.get('basePrice')?.errors?.['min']" class="error">
       Base price cannot be negative.
     </div>
     <div
-        *ngIf="editBookForm.get('basePrice')?.errors?.['max']"
+        *ngIf="form.get('basePrice')?.errors?.['max']"
         class="error"
       >
         Base price must not exceed 100000.

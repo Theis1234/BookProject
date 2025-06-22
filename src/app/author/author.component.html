@@ -14,7 +14,7 @@
     @for (author of filteredAuthors; track author){
     <div class="author-card">      
       <h3 class="author-name-title">{{ author.firstName }} {{ author.lastName }}</h3>
-      <h3 class="author-nationality">Nationality: {{ author.nationality }} </h3>
+      <h3 class="author-nationality">Nationality: {{ author.nationality?.countryName }} </h3>
       <p class="author-last-published"><strong>Last Published Book:</strong> {{ author.lastPublishedBook }} </p>
       <p class="author-books-published"><strong>Books Published:</strong> {{ author.numberOfBooksPublished }} </p>
       <img src="/assets/v3_0744730.jpg" alt="Picture of {{ author.lastName }}" class="author-image">
